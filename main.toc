@@ -1,0 +1,11 @@
+\babel@toc {italian}{}\relax 
+\babel@toc {italian}{}\relax 
+\contentsline {chapter}{\numberline {1}Questo è un capitolo}{5}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Questa è una sezione}{5}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}Questa è una sottosezione}{5}{subsection.1.1.1}%
+\contentsline {subsubsection}{Questa è una sotto-sottosezione}{6}{section*.2}%
+\contentsline {subsubsection}{Questa è un'altra sottosezione}{6}{section*.3}%
+\contentsline {section}{\numberline {1.2}Questa è un'ennesima sezione}{7}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Sottosezione con una tabella}{7}{subsection.1.2.1}%
+\contentsline {chapter}{\numberline {2}Stato dell'Arte}{9}{chapter.2}%
+\contentsline {chapter}{\numberline {A}Questa è un'appendice}{13}{appendix.Alph1}%
