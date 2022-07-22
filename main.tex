@@ -1,12 +1,12 @@
-    %   Il progetto nasce dal template per il frontespizio realizzato da Marco Antonio Corallo, che ringrazio. Seguono alcuni commenti per evidenziare la presenza di alcuni pacchetti che mi sono stati utili per la stesura della tesi. Chiaramente, dipende tutto dal tipo di lavoro che uno vuole eseguire, che determina anche le diverse esigenze. Durante la stesura ho passato molto tempo su siti e forum a cercare di risolvere alcuni problemi di formattazione, ma in generale Latex è stato piuttosto versatile. 
-
 % Tipo di documento. L'uso di twoside implica che i capitoli inizino sempre con la prima pagina a sinistra, eventualmente lasciando una pagina vuota nel capitolo precedente. Se questa cosa è fastidiosa, è possibile rimuoverlo. 
 \documentclass[a4paper, twoside,openright]{report}
+% interlinea
+\linespread{1.5} 
 
 % Dimensione dei margini
 \usepackage[a4paper,top=3cm,bottom=3cm,left=3cm,right=3cm]{geometry} 
 % Dimensione del font
-\usepackage[fontsize=12pt]{scrextend}
+\usepackage[fontsize=14pt]{scrextend}
 % Lingua del testo
 \usepackage[english,italian]{babel}
 % Lingua per la bibliografia
@@ -153,11 +153,11 @@
 % Margini prima e dopo blocchi di codice, per avere più distanza
 \lstset{aboveskip=20pt,belowskip=20pt}
 
-% Modifica dello stile dei riferimenti, con il testo in cyano
+% Modifica dello stile dei riferimenti, con il testo in nero
 \hypersetup{
     colorlinks,
-    linkcolor=CornflowerBlue,
-    citecolor=CornflowerBlue
+    linkcolor=black,
+    citecolor=black
 }
 
 % Aggiunti definizioni, teoremi, linea e listing
@@ -178,6 +178,7 @@
 % -----------------------------------------------------------------
 \begin{document}
 
+
 \include{chapters/Frontespizio}
 \include{chapters/Abstract}
 
@@ -186,6 +187,9 @@
 % Rimuovere se non si vuole la tabella delle figure
 % \listoffigures
 
+%! TODO eliminare
+\cite{LgDoc}
+
 \include{chapters/Introduzione}
 \include{chapters/StatoArte}
 \include{chapters/TecnologieUtilizzate}
@@ -193,7 +197,6 @@
 \include{chapters/StudioAggiunte}
 \include{chapters/Conclusioni}
 
-\cite{LgDoc}
 
 \bibliographystyle{plain}
 \bibliography{chapters/Bibliografia.bib}
