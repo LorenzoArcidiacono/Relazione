@@ -29,6 +29,20 @@ Inoltre, tramite un codice QR creato automaticamente insieme ai contenuti mostra
 \tomodify{I casi d'uso sono molteplici: cinema, ristoranti, turismo, sanità o soluzioni personalizzate per fare alcuni esempi.
 Tramite l'utilizzo di alcuni plugin è inoltre possibile ampliare ancora le possibilità del servizio come la possibilità di fare webcall e l'integrazione di social network.}
 
+\section{Stato dell'arte}
+
+All'inizio del tirocinio l'applicazione LiveSignage era già disponibile per dispositivi di Samsung e Raspberry.  
+
+L'idea alla basse dell'applicazione è quella di mostrare una serie di slide organizzate in playlist; ogni slide può mostrare diversi tipi di contenuti come ad esempio immagini, video, web page, mappe, social network, input esterni. Le playlist possono essere di diverso tipo:
+
+\begin{itemize}
+    \item Semplici: le slide vengono mostrate a schermo intero e si susseguono continuamente;
+    \item Composte: in questo caso lo spazio a disposizione viene suddiviso in più parti e in ognuna di queste viene mostrata una playlist diversa;
+    \item Concatenate: vengono concatenate più playlist una dopo l'altra.
+\end{itemize}
+
+\tomodify{Oltre alle semplici playlist è possibile anche inserire dei plugin per poter dare al cliente più possibilità di personalizzazione }, questi ad esempio permettono di  mostrare contenuti interattivi utilizzando l'input dell'utente tramite il touchscreen o di inserire il proprio e-commerce.
+
 \subsection{Architettura}
 \begin{figure}[!htb]
     \centering
@@ -39,16 +53,21 @@ Tramite l'utilizzo di alcuni plugin è inoltre possibile ampliare ancora le poss
 
 \tomodify{immagine dell'architettura da modificare: \url{https://miro.com/app/board/uXjVOjz-X_4=/}}
 
-\tomodify{L'applicazione è installata direttamente sul device,il cliente può selezionare cosa far visualizzare ed eventuali modifiche del sistema come timer di accensione e spegnimento, fuso orario, volume e luminosità direttamente da un browser o dall'applicazione (Figura: \ref*{fig:schermata-web}).\nl
+\tomodify{L'applicazione è installata direttamente sul device, il cliente può impostare le playlist o eventuali modifiche del sistema come timer di accensione e spegnimento, fuso orario, volume e luminosità direttamente da un browser o dall'applicazione per dispositivi mobili (Figura: \ref*{fig:schermata-web}).\nl
 Queste modifiche vengono inviate, tramite chiamate API all'BackOffice che attraverso una socket si occupa di comunicare all'applicazione i cambiamenti avvenuti. 
-L'applicazione utilizza le API del device per settare le modifiche di sistema e scrivere i file necessari per il mantenimento del database. Tale database è usato per salvare tutte le informazioni sui contenuti mostrati fino a quel momento, eventuali timer, ID del dispositivo e altre informazioni utili al corretto funzionamento. 
-Le immagini e i video scaricati vengono salvati sul dispositivo e non saranno cancellate a meno di una richiesta specifica del cliente o in caso di necessità di liberare memoria. Questo per evitare di scaricare più volte lo stesso file.}
+L'applicazione utilizza le API del device per settare le modifiche di sistema e scrivere i file necessari per il mantenimento dei database e il salvataggio degli assets necessari: immagini e video. \n
+Sono utilizzati due database: il primo è usato per salvare tutte le informazioni sulle playlist inserite fino a quel momento, eventuali timer, ID del dispositivo e altre informazioni utili al corretto funzionamento, il secondo salva i messaggi, tipicamente di errore, dell'applicazione; questo serve per permettere al cliente di scaricare questi messaggi in caso di problemi.\n
+Le immagini e i video scaricati vengono salvati sul dispositivo e non saranno cancellate a meno di una richiesta specifica del cliente o in caso di necessità di liberare memoria. Questo per evitare di scaricare più volte lo stesso file.}\n
+Il LocalStorage è usato come memoria condivisa tra i componenti dell'applicazione e per accedere velocemente ad alcune informazioni necessarie senza doverle leggere dal database.
+
+La figura \ref*{fig:architettura} mostra in maniera schematica l'architettura dell'applicazione e l'interazione con l'utente finale.
+
 \begin{figure}[!htb]
     \centering
     \includegraphics[width= 1\textwidth]{images/Introduzione/SchermataWebLS.jpg} 
-    \caption{Schermata della pagina web del device.} 
+    \caption{Schermata della Web Page per programmare il display.} 
     \label{fig:schermata-web}
 \end{figure}
-\section{Stato dell'arte}
+
 \section{Obiettivi raggiunti}
 \section{Struttura della Relazione}
