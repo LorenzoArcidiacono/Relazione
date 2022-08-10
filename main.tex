@@ -181,11 +181,18 @@
 \newcommand{\torevise}[1]{\textcolor{red}{#1}}
 \newcommand{\edit}[1]{\textcolor{NavyBlue}{#1}}
 \newcommand{\approved}[1]{\textcolor{black}{#1}}
+\newcommand{\tomodify}[1]{\textcolor{purple}{#1}}
 
 % comandi per il codice inline
 \newcommand{\jscode}[1]{\lstinline[language=JavaScript]{#1}}
 \newcommand{\htmlcode}[1]{\lstinline[language=HTML]{#1}}
 
+% Profondità della ToC
+\setcounter{tocdepth}{2}
+
+% Abbreviazioni per i comandi
+\newcommand{\n}{\newline}
+\newcommand{\nl}{\newline \newline }
 % -----------------------------------------------------------------
 \begin{document}
 
@@ -194,7 +201,6 @@
 \include{chapters/Abstract}
 
 \tableofcontents
-
 
 % ! Eliminare
 \cite{LgDoc}

@@ -2,6 +2,7 @@
 
 ## Introduzione
 [ ] Architettura
+    [ ] cosa sono le playlist   
 
 ## Tecnologie utilizzate
 
