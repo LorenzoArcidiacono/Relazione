@@ -12,6 +12,6 @@
 
 ## Svolgimento Generale
 [ ] testing
-[ ] 
+[ ] analisi
 
 # Cose da sistemare
