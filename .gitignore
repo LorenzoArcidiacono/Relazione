@@ -3,3 +3,4 @@ out.nosync
 .vscode
 DocLS.pdf
 .DS_Store
+.vscode/setting.json
