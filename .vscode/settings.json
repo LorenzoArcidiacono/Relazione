@@ -1,2 +1,6 @@
 {
+    "todo-tree.general.tagGroups": {
+    
+    },
+    "todo-tree.general.enableFileWatcher": true
 }
