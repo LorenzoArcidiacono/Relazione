@@ -1,8 +1,9 @@
 # Cose da ricordarsi
 
 ## Introduzione
+[ ] Cambiare immagine back-office
 [ ] Architettura
-    [ ] cosa sono le playlist   
+    [x] cosa sono le playlist   
 
 ## Tecnologie utilizzate
 [ ] jquery 
