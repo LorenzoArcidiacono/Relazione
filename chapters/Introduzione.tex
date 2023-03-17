@@ -2,21 +2,22 @@
 \linespread{1.5}
 
 \section{In Breve}
-Breve introduzione sullo scopo e svolgimento del tirocinio compreso il contesto in cui ho svolto il lavoro, sull'applicazione LiveSignage e sua architettura, sullo stato dell'arte e sugli obiettivi raggiunti. Infine una descrizione della struttura di questa relazione.
+Breve introduzione sullo scopo e svolgimento del tirocinio compreso il contesto in cui ho svolto il lavoro, sull'applicazione LiveSignage e sua architettura, sullo stato dell'arte e sugli obiettivi raggiunti. Infine una descrizione della struttura di questa relazione. \torevise{questo è un tuo appunto informale, vero?}
 
 \section{Scopo del Tirocinio}
 
-Il tirocinio è stato svolto presso Softhrod srl. all'interno del progetto LiveSignage: applicazione focalizzata sulla distribuzione di contenuti multimediali targettizzati, dove ho partecipato alle fasi di analisi, progettazione e sviluppo della soluzione atta a sfruttare i dispositivi LG: professional display, videowall, smart TV, sistemi IoT, media player. Entrando a far parte del team di sviluppo e confrontandomi con UI/UX designer, sviluppatori front-end e back-end.
+Il tirocinio è stato svolto presso \torevise{l'azienda} Softhrod srl. \torevise{di Volterra (?)} all'interno del progetto LiveSignage \torevise{(è un progetto dell'azienda o per esempio un progetto europeo? in caso dirlo)}: \torevise{"." Scopo del tirocinio è lo sviluppo di un' }applicazione focalizzata sulla distribuzione di contenuti multimediali targettizzati, dove ho partecipato alle fasi di analisi, progettazione e sviluppo della soluzione atta a sfruttare \torevise{sfruttare???} i dispositivi LG: professional display, videowall, smart TV, sistemi IoT, media player. Entrando a far parte del team di sviluppo e confrontandomi con UI/UX designer, sviluppatori front-end e back-end \torevise{(qui manca la proposizione principale)}.
 
-L'obiettivo del lavoro era quello di sviluppare una versione dell'applicazione LiveSignage, capace di visualizzare specifici contenuti multimediali sulla base di eventi acquisiti e parametri indicati dall'utente, sviluppata in linguaggio Javascript sfruttando le API REST della piattaforma, per il sistema operativo di LG: WebOs Signage.
+L'obiettivo del lavoro era quello di sviluppare una versione dell'applicazione LiveSignage, capace \torevise{(al fine---chi è il sogetto di capace, la versione o LiveSignage?)} di visualizzare specifici contenuti multimediali sulla base di eventi acquisiti \torevise{cosa sono?} e parametri indicati dall'utente, sviluppata in linguaggio Javascript sfruttando le API REST della piattaforma \torevise{quale?}, per il sistema operativo di LG: WebOs Signage.
 
 \section{Modalità di Lavoro}
 
-Ho lavorato in modalità mista ( telematica e presenza ) in maniera prevalentemente autonoma, ma mantenendo un confronto diretto sia con gli altri sviluppatori sia con i designer per tutte le scelte delle logiche e di sviluppo dell'applicazione. Ho così avuto modo di capire quale sia il processo produttivo dell'azienda, come si lavora in team e l'attenzione per l'esperienza utente fondamentale per questo software.
+Ho lavorato in modalità mista ( telematica e presenza ) in maniera prevalentemente autonoma, ma mantenendo un confronto diretto sia con gli altri sviluppatori sia con i designer per tutte le scelte delle logiche e di sviluppo dell'applicazione \torevise{controlla italiano}. Ho così avuto modo di capire quale sia il processo produttivo dell'azienda, come si lavora in team e l'attenzione per l'esperienza utente fondamentale per questo software.
 
 \section{LiveSignage}
 
-LiveSignage è un’applicazione per il digital signage sviluppata per vari dispositivi specializzati tra i quali quelli di Samsung. L’idea è quella di permettere al cliente di aumentare il proprio engagement in modo semplice, permettendo di mostrare facilmente qualsiasi contenuto: filmati, foto, infografiche, webfeed e informazioni in tempo reale. Tramite l'utilizzo di alcuni plugin, è possibile ampliare ancora i casi d'uso del servizio: come la possibilità di fare webcall e l'integrazione di social network.
+\torevise{introdurre il digital signage}
+LiveSignage è un’applicazione per il digital signage sviluppata per vari dispositivi specializzati tra i quali quelli di Samsung. L’idea è quella di permettere al cliente di aumentare il proprio engagement \torevise{???} in modo semplice, permettendo di mostrare \torevise{(è il cliente che mostra?? PLEAS, attenzione all'italiano: non serve scrivere come uno scrittore di romanzi, ma serve scrivere in modo corretto e chiaro, come richiesto in un testo scientifico, in cui per esempio è sempre chiaro chi è il soggetto della frase, in cui non ci sono aggettivi o avverbi a casaccio... )} facilmente qualsiasi contenuto: filmati, foto, infografiche, webfeed e informazioni in tempo reale. Tramite l'utilizzo di alcuni plugin, è possibile ampliare ancora i casi d'uso \torevise{sarebbe meglio parlare di features che di casi d'uso, che si assumono definiti a design time} del servizio: come la possibilità di fare webcall e l'integrazione di social network.
 
 \begin{figure}[!htb]
     \centering
@@ -24,9 +25,9 @@ LiveSignage è un’applicazione per il digital signage sviluppata per vari disp
     \caption{Esempio di infografica in un'installazione cittadina.} 
 \end{figure}
 
-Inoltre, tramite un codice QR creato automaticamente insieme ai contenuti mostrati, l'utente finale può ricevere le informazioni in modo più dettagliato sul proprio dispositivo mobile senza bisogno di scaricare applicazioni o fare ricerche online.
+Inoltre, tramite un codice QR creato automaticamente insieme ai contenuti mostrati, l'utente finale può ricevere le informazioni in modo più dettagliato sul proprio dispositivo mobile senza bisogno di scaricare applicazioni o fare ricerche online. \torevise{frase confusa}
 
-I casi d'uso sono molteplici: cinema, ristoranti, turismo, sanità e soluzioni personalizzate, per fare alcuni esempi.
+I casi d'uso sono molteplici: cinema, ristoranti, turismo, sanità e soluzioni personalizzate, per fare alcuni esempi. \torevise{questi non possono essere casi d'uso: i casi d'uso sono task realizzati da un attore con l'ausilio del sistema. Grossolanamente si può dire che devono essere verbi e non sostantivi.}
 
 \section{Stato dell'arte}
 
@@ -56,8 +57,9 @@ Oltre alle playlist è possibile utilizzare dei plugin per poter dare al cliente
     \label{fig:architettura}
 \end{figure}
 
+\torevise{non a questo livello di dettaglio (parlare di socket o salvataggi nel DB)  nell'introduzione}
 
-L'applicazione è installata direttamente sul device, il cliente può impostare le playlist o eventuali modifiche del sistema come: timer di accensione e spegnimento, fuso orario, volume e luminosità, direttamente da un browser o dall'applicazione per dispositivi mobili (Figura: \ref*{fig:schermata-web}).\nl
+L'applicazione è installata direttamente sul device \torevise{quale? il pannello o qualcosa in mano al cliente?}, il cliente può impostare le playlist o eventuali modifiche del sistema come: timer di accensione e spegnimento, fuso orario, volume e luminosità, direttamente da un browser o dall'applicazione per dispositivi mobili (Figura: \ref*{fig:schermata-web}). \torevise{di questa sezione ne parliamo a voce}\nl
 Queste modifiche vengono inviate, tramite chiamate API al BackOffice che attraverso una socket si occupa di comunicare all'applicazione i cambiamenti avvenuti. 
 L'applicazione utilizza le API del device per settare le modifiche di sistema e scrivere i file necessari per il mantenimento dei database e il salvataggio degli assets necessari: immagini e video. \n
 Sono utilizzati due database: il primo è usato per salvare tutte le informazioni sulle playlist inserite fino a quel momento, eventuali timer, ID del dispositivo e altre informazioni utili al corretto funzionamento, il secondo salva i messaggi, tipicamente di errore, dell'applicazione che possono essere successivamente scaricati.\n
@@ -78,6 +80,8 @@ Al termine del tirocinio la versione di LiveSignage per WebOS Signage è stata c
 
 \section{Struttura della Relazione}
 Di seguito una breve descrizione della suddivisione in capitoli di questa relazione.
+
+\torevise{manca una descrizione dei requisiti dalla lista}
 \begin{itemize}
     \item Tecnologie utilizzate: Descrizione delle tecnologie a disposizione, loro differenze e scelte implementative da queste derivanti. Linguaggi e librerie utilizzate.
     \item LiveSignage su WebOs: Descrizione del lavoro svolto, difficoltà incontrate e soluzioni trovate, modifiche all'applicazione pre-esistente. Descrizione della fase di testing finale.
