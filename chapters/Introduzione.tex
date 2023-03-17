@@ -6,42 +6,46 @@ Breve introduzione sullo scopo e svolgimento del tirocinio compreso il contesto 
 
 \section{Scopo del Tirocinio}
 
-Il tirocinio è stato svolto presso Softhrod srl. all'interno del progetto LiveSignage: applicazione focalizzata sulla distribuzione di contenuti multimediali targettizzati, dove ho partecipato alle fasi di analisi, progettazione e sviluppo della soluzione atta a sfruttare i dispositivi LG: professional display, videowall, smart TV, sistemi IoT, media player. Entrando a far parte del team di sviluppo e confrontandomi con UI/UX designer, sviluppatori front-end e back-end.
-
-L'obiettivo del lavoro era quello di sviluppare una versione dell'applicazione LiveSignage, capace di visualizzare specifici contenuti multimediali sulla base di eventi acquisiti e parametri indicati dall'utente, sviluppata in linguaggio Javascript sfruttando le API REST della piattaforma, per il sistema operativo di LG: WebOs Signage.
+\edit{Il tirocinio è stato svolto presso l'azienda Softhrod srl. di Volterra all'interno del progetto LiveSignage, un'applicazione focalizzata sulla distribuzione di contenuti multimediali targettizzati. Scopo del tirocinio è l'analisi, la progettazione e lo sviluppo di un'applicazione lato client per il sistema operativo WebOs Signage sui dispositivi LG:  display professionali, videowall, smart TV, sistemi IoT, media player. L'applicazione deve essere in grado di mostare specifici contenuti multimediali sulla base di eventi acquisiti dall'ambiente circostante, come ad esempio condizioni metereologiche o orario, e parametri indicati dall'utente. L'applicazione è stata sviluppata in linguaggio Javascript sfruttando le API REST messe a disposizione dal sistema operativo.}
 
 \section{Modalità di Lavoro}
 
-Ho lavorato in modalità mista ( telematica e presenza ) in maniera prevalentemente autonoma, ma mantenendo un confronto diretto sia con gli altri sviluppatori sia con i designer per tutte le scelte delle logiche e di sviluppo dell'applicazione. Ho così avuto modo di capire quale sia il processo produttivo dell'azienda, come si lavora in team e l'attenzione per l'esperienza utente fondamentale per questo software.
+Ho lavorato in modalità mista ( telematica e presenza ) in maniera prevalentemente autonoma, ma mantenendo un confronto diretto sia con gli altri sviluppatori sia con i designer per tutte le scelte riguardanti le logiche e lo sviluppo dell'applicazione. Ho così avuto modo di capire quale sia il processo produttivo dell'azienda, come si lavora in team e l'attenzione per l'esperienza utente, fondamentale per questo software.
 
-\section{LiveSignage}
+\section{Digital signage e LiveSignage}
 
-LiveSignage è un’applicazione per il digital signage sviluppata per vari dispositivi specializzati tra i quali quelli di Samsung. L’idea è quella di permettere al cliente di aumentare il proprio engagement in modo semplice, permettendo di mostrare facilmente qualsiasi contenuto: filmati, foto, infografiche, webfeed e informazioni in tempo reale. Tramite l'utilizzo di alcuni plugin, è possibile ampliare ancora i casi d'uso del servizio: come la possibilità di fare webcall e l'integrazione di social network.
+\edit{Il digital signage è una forma di comunicazione di prossimità sul punto vendita o in spazi pubblici aperti o all'interno di edifici, anche nota in Italia come segnaletica digitale, videoposter o cartellonistica digitale, i cui contenuti vengono mostrati ai destinatari attraverso schermi elettronici o videoproiettori appositamente sistemati in luoghi pubblici. Le tipologie di contenuti che possono essere mostrati sono molteplici: video, mappe, immagini, menù, feed real time, elementi interattivi; di conseguenza sono molteplici i contesti in cui può essere utilizzato negozi, ristoranti, alberghi e totem nelle città sono alcuni esempi.}
+
+LiveSignage è un’applicazione per il digital signage sviluppata per vari dispositivi specializzati tra i quali quelli di Samsung. \edit{L’idea è quella di fornire all'utente un modo semplice e flessibile per creare i propri contenuti cercando, quando possibile, di automatizzare il processo usando tutte le informazioni contenute sul suo sito web o collegando il proprio database}. Tramite l'utilizzo di alcuni plugin, è possibile ampliare ancora le feature disponibili: come la possibilità di fare webcall e l'integrazione delle informazioni reperibili dai propri social network.
+
+\edit{Alla creazione di una playlist (vedi sezione \ref*{statoarte}) viene automaticamente creata una progressive Web App: un'applicazione navigabile direttamente dal browser e completamente impostabile dal creatore dei contenuti permettendo un'interazione maggiore dell'utente finale.}
+
+\edit{Nella Figura \ref{fig:liveToursitSample} viene mostrato un esempio di quello che potrebbe essere mostrato su un totem installato in una città; tramite il codice QR creato automaticamente insieme ai contenuti mostrati, il consumatore può quindi ricevere le informazioni in modo più dettagliato sul proprio dispositivo mobile senza bisogno di scaricare applicazioni o fare ricerche online.}
 
 \begin{figure}[!htb]
     \centering
     \includegraphics[width= 0.5\textwidth]{images/Introduzione/LiveTurist.jpg} 
     \caption{Esempio di infografica in un'installazione cittadina.} 
+    \label{fig:liveToursitSample}
 \end{figure}
 
-Inoltre, tramite un codice QR creato automaticamente insieme ai contenuti mostrati, l'utente finale può ricevere le informazioni in modo più dettagliato sul proprio dispositivo mobile senza bisogno di scaricare applicazioni o fare ricerche online.
 
-I casi d'uso sono molteplici: cinema, ristoranti, turismo, sanità e soluzioni personalizzate, per fare alcuni esempi.
 
-\section{Stato dell'arte}
+\section{Stato dell'arte}\label{statoarte}
 
-All'inizio del tirocinio LiveSignage era già disponibile per dispositivi di Samsung e Raspberry.  
+All'inizio del tirocinio il client di LiveSignage era già disponibile per dispositivi di Samsung e Raspberry.  
 
 L'idea alla base dell'applicazione è quella di mostrare una serie di slide organizzate in playlist; ogni slide può mostrare diversi tipi di contenuti come ad esempio immagini, video, web page, mappe, notizie, input esterni. Le playlist possono essere di diverso tipo:
 
 \begin{itemize}
     \item Semplici: le slide vengono mostrate a schermo intero e si susseguono continuamente;
-    \item Composte: in questo caso lo spazio a disposizione viene suddiviso in più parti e in ognuna di queste viene mostrata una playlist diversa;
+    \item Composte: in questo caso lo spazio a disposizione viene suddiviso in più parti e in ognuna di queste viene mostrata una playlist diversa (Fig. \ref*{fig:playlist-composta});
     \item Concatenate: vengono concatenate più playlist una dopo l'altra.
     \begin{figure}[!htb]
         \centering
         \includegraphics[width= 0.8\textwidth]{images/Introduzione/playlist-composta.png} 
         \caption{Una playlist composta.} 
+        \label{fig:playlist-composta}
     \end{figure}
 \end{itemize}
 
@@ -56,14 +60,12 @@ Oltre alle playlist è possibile utilizzare dei plugin per poter dare al cliente
     \label{fig:architettura}
 \end{figure}
 
+\edit{L'applicazione è suddivisa in due parti: una parte è installata sul dispositivo per il digital signage, questa si occupa di riceve dal backoffice le playlist da mostrare e le impostazioni che il creatore di contenuti ha impostato (timer di accensione, volume, luminosità), la seconda parte è online ed è accessibile tramite una web page (Fig: \ref*{fig:schermata-web}): qui è possibile controllare alcune funzioni del device client, creare e impostare le proprie playlist e i plugin. 
+\nl
+Le modifiche impostate dal backoffice vengono comunicate al dispositivo che, tramite le interfacce offerte dal sistema, scrive i file necessari alla persistenza delle informazioni, scarica gli assets necessari (immagini e video) e setta le impostazioni selezionate.}
 
-L'applicazione è installata direttamente sul device, il cliente può impostare le playlist o eventuali modifiche del sistema come: timer di accensione e spegnimento, fuso orario, volume e luminosità, direttamente da un browser o dall'applicazione per dispositivi mobili (Figura: \ref*{fig:schermata-web}).\nl
-Queste modifiche vengono inviate, tramite chiamate API al BackOffice che attraverso una socket si occupa di comunicare all'applicazione i cambiamenti avvenuti. 
-L'applicazione utilizza le API del device per settare le modifiche di sistema e scrivere i file necessari per il mantenimento dei database e il salvataggio degli assets necessari: immagini e video. \n
-Sono utilizzati due database: il primo è usato per salvare tutte le informazioni sulle playlist inserite fino a quel momento, eventuali timer, ID del dispositivo e altre informazioni utili al corretto funzionamento, il secondo salva i messaggi, tipicamente di errore, dell'applicazione che possono essere successivamente scaricati.\n
-Per diminuire i tempi di attesa dovuti ai download e il carico della rete le immagini e i video scaricati vengono salvati sul dispositivo e non saranno cancellate a meno di una richiesta specifica del cliente o in caso di necessità di liberare memoria.\n
 
-La figura \ref*{fig:architettura} mostra in maniera schematica l'architettura dell'applicazione e l'interazione con l'utente finale.
+La figura \ref*{fig:architettura} mostra in maniera schematica l'architettura dell'applicazione e l'interazione con il consumatore.
 
 \begin{figure}[!htb]
     \centering
@@ -72,9 +74,13 @@ La figura \ref*{fig:architettura} mostra in maniera schematica l'architettura de
     \label{fig:schermata-web}
 \end{figure}
 
+\section{Requisiti}
+\edit{Lo svolgimento del lavoro è incentrato sullo sviluppo di un'applicazione client per il sistema operativo WebOS signage di LG; questa deve essere in grado di mostrare contenuti multimediali tramite l'uso di html e css su un web engine basato su chromium, deve poter eseguire degli script Javascript e comunicare con il device tramite l'uso delle interfacce messe a disposizione dal sistema operativo.
+L'applicazione deve inoltre essere in grado di salvare in memoria gli assets e le informazioni necessarie affinchè possa funzionare anche in assenza di connessione.} 
+
 \section{Obiettivi raggiunti}
 
-Al termine del tirocinio la versione di LiveSignage per WebOS Signage è stata correttamente sviluppata; ho avuto inoltre modo di aggiungere, o almeno studiare la possibilità di farlo alcune funzionalità non presenti nella versione per dispositivi Samsung, le quali non erano previste a inizio tirocinio, che lo studio della documentazione ci ha portato a considerare.
+Al termine del tirocinio la versione di LiveSignage per WebOS Signage è stata correttamente sviluppata; ho avuto inoltre modo di aggiungere, o almeno studiare la possibilità di farlo, alcune funzionalità non presenti nella versione per dispositivi Samsung. \edit{Queste non erano previste a inizio tirocinio ma sono state pensate a seguito dello studio della documentazione.}
 
 \section{Struttura della Relazione}
 Di seguito una breve descrizione della suddivisione in capitoli di questa relazione.
