@@ -4,6 +4,7 @@
 \usepackage[a4paper,top=3cm,bottom=3cm,left=3cm,right=3cm]{geometry} 
 % Dimensione del font
 \usepackage[fontsize=13pt]{scrextend}
+
 % Lingua del testo
 \usepackage[english,italian]{babel}
 % Lingua per la bibliografia
@@ -11,7 +12,7 @@
 % Codifica del testo
 \usepackage[utf8]{inputenc} 
 % Encoding del testo
-\usepackage[T1]{fontenc}
+% \usepackage[T1]{fontenc}
 % Permette di generare testo fittizio. Mi è stato utile 
 % per capire quale sarebbe stata l'impostazione del 
 % testo nella pagina prima che scrivessi un determinato paragrafo
@@ -182,7 +183,10 @@
 \newcommand{\torevise}[1]{\textcolor{red}{#1}}
 \newcommand{\edit}[1]{\textcolor{NavyBlue}{#1}}
 \newcommand{\approved}[1]{\textcolor{black}{#1}}
+
+% Comandi per il color coding delle note e delle parti da sistemare
 \newcommand{\tomodify}[1]{\textcolor{purple}{#1}}
+\newcommand{\note}[1]{\textcolor{Bittersweet}{#1}}
 
 % comandi per il codice inline
 \newcommand{\jscode}[1]{\lstinline[language=JavaScript]{#1}}
