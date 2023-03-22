@@ -1,8 +1,32 @@
-\chapter{Tecnologie Utilizzate}
+\chapter{Tecnologie utilizzate}
 
-\section{In Breve}
+\section{In breve}
 Descrizione delle tecnologie a disposizione (due device diversi), loro differenze e scelte implementative da queste derivanti. Linguaggi e librerie utilizzate. 
 
-\section{Dispositivi a Disposizione}
-\subsection{Scelta delle API}
-\section{Linguaggi di Programmazione e Librerie}
+\section{Dispositivi a disposizione}
+Per lo svolgimento del tirocinio sono stati messi a disposizione due device LG con versioni differenti del sistema operativo:
+\begin{itemize}
+    \item Un player (un device non dotato di schermo) con la versione 4.0;
+    \item Un professional display con la versione 6.0.
+\end{itemize}
+
+Oltre alle differenze hardware i due modelli presentano importanti differenti al livello del software; sul primo è installato il web engine Chromium 53 e supporta solamente la visualizzazione di 2 video contemporaneamente, il secondo supporta fino a 4 video e ha installato Chromium 79.
+
+La differenza di web engine ha comportato un'analisi approfondita delle librerie e delle funzioni JavaScript supportate e ha quindi guidato le scelte implementative del progetto.
+
+
+\section{Linguaggi di programmazione e librerie}
+
+Il tirocinio, oltre al linguaggio di markup HTML e quello di stile CSS, si è basato sul linguaggio di programmazione JavaScript: un linguaggio interpretato usato principalmente nella programmazione front-end delle pagine web (la cui documentazione è reperibile in \cite{MdN}).
+
+Oltre alle librerie di sistema (vedi \ref{api}), sono state utilizzate la librerie JQuery \cite{jQDoc} per la manipolazione delle pagine HTML e per la gestione degli eventi e la libreria Dixie.js \cite{dixie} per la gestione dei database (descritti in \ref*{database}). Entrambe le librerie sono già utilizzate negli altri client sviluppati dall'azienda ed è stato quindi deciso di mantenerle sia per una questione di manutenibilità dei diversi client, sia perché comportano notevoli miglioramenti alla leggibilità del codice e al suo funzionamento.
+
+Non avendo familiarità con i linguaggi e le tecnologie utilizzati si è reso necessario un'iniziale studio approfondito dei linguaggi e delle librerie necessarie.
+
+\subsection{Scelta delle API} \label{api}
+
+Dal momento che il linguaggio Javascript, per questioni di sicurezza, non ha modo di comunicare con il sistema operativo sottostante in modo nativo, sono state messe a disposizione, dagli sviluppatori LG, delle interfacce implementate sottoforma di librerie Javascript per poter eseguire operazioni e ricevere informazioni dal device quali: informazioni di rete, stato del dispositivo, eventuali timer di accensione e spegnimento e gestione degli aggiornamenti dell'applicazione e del sistema operativo.
+
+I set di API (Application Programming Interface) messi a disposizione sono molteplici (come specificato in \cite{LgDoc}), tuttavia non tutti sono compatibili con tutte le versioni del sistema operativo. È stato quindi deciso di basare il progetto sul set SCAP (Signage Application Platform) API v1.8 poiché questo è supportato dalla maggior parte dei dispositivi LG in commercio. Alcune di queste interfacce saranno approfondite nel capitolo \ref*{svolgimento}.
+
+Non tutte le API messe a disposizione sono state utilizzate durante lo svolgimento del tirocinio, è stata comunque fatta un'analisi al fine di capire quali possano essere di interesse per implementazioni successive (vedi \ref*{future_implementazioni}).
