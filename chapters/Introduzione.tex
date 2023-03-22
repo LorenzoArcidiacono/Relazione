@@ -1,4 +1,5 @@
-\chapter{Introduzione} \note{levare capitolo 1 come titolo}
+\chapter{Introduzione} 
+% \note{levare capitolo 1 come titolo}
 \linespread{1.5}
 
 \section{In Breve}
@@ -10,13 +11,13 @@ Breve introduzione sullo scopo e svolgimento del tirocinio compreso il contesto 
 
 \section{Modalità di lavoro}
 
-Ho lavorato in modalità mista ( telematica e presenza ) in maniera prevalentemente autonoma, ma mantenendo un confronto diretto sia con gli altri sviluppatori sia con i designer per tutte le scelte riguardanti le logiche e lo sviluppo dell'applicazione. Ho così avuto modo di capire quale sia il processo produttivo dell'azienda, come si lavora in team e l'attenzione per l'esperienza utente, fondamentale per questo \note{ambito }software.
-\note{impersonale?}
+Ho lavorato in modalità mista ( telematica e presenza ) in maniera prevalentemente autonoma, ma mantenendo un confronto diretto sia con gli altri sviluppatori sia con i designer per tutte le scelte riguardanti le logiche e lo sviluppo dell'applicazione. Ho così avuto modo di capire quale sia il processo produttivo dell'azienda, come si lavora in team e l'attenzione per l'esperienza utente, fondamentale per questo ambito.
+
 \section{Digital signage e LiveSignage}
 
-\edit{Il digital signage è una forma di comunicazione di prossimità \note{nel\ direttamente nel}sul punto vendita, in spazi pubblici aperti o all'interno di edifici, anche nota in Italia come segnaletica digitale, videoposter o cartellonistica digitale, i cui contenuti vengono mostrati ai destinatari attraverso schermi elettronici o videoproiettori disposti in maniera strategica. Le tipologie di contenuti che possono essere mostrati sono molteplici: video, mappe, immagini, menù, feed real time, elementi interattivi; di conseguenza sono molteplici i contesti in cui può essere utilizzato: negozi, ristoranti, alberghi e totem nelle città sono alcuni esempi.}
+\edit{Il digital signage è una forma di comunicazione direttamente nel punto vendita, in spazi pubblici aperti o all'interno di edifici, anche nota in Italia come segnaletica digitale, videoposter o cartellonistica digitale, i cui contenuti vengono mostrati ai destinatari attraverso schermi elettronici o videoproiettori disposti in maniera strategica. Le tipologie di contenuti che possono essere mostrati sono molteplici: video, mappe, immagini, menù, feed real time, elementi interattivi; di conseguenza sono molteplici i contesti in cui può essere utilizzato: negozi, ristoranti, alberghi e totem nelle città sono alcuni esempi.}
 
-LiveSignage è un’applicazione per il digital signage sviluppata per vari dispositivi specializzati tra i quali quelli di Samsung. \note{per varie marche di display tra cui Samsung} \edit{L’idea è quella di fornire all'utente un modo semplice e flessibile per creare i propri contenuti cercando, quando possibile, di automatizzare il processo usando tutte le informazioni contenute sul suo sito web o collegando il proprio database}. Tramite l'utilizzo di alcuni plugin, è possibile ampliare ancora le feature disponibili: come la possibilità di fare webcall e l'integrazione delle informazioni reperibili dai propri social network.
+LiveSignage è un’applicazione per il digital signage sviluppata per vari dispositivi specializzati tra i quali quelli di Samsung. \edit{L’idea è quella di fornire all'utente un modo semplice e flessibile per creare i propri contenuti cercando, quando possibile, di automatizzare il processo usando tutte le informazioni contenute sul suo sito web o collegando il proprio database}. Tramite l'utilizzo di alcuni plugin, è possibile ampliare ancora le feature disponibili: come la possibilità di fare webcall e l'integrazione delle informazioni reperibili dai propri social network.
 
 \edit{Alla creazione di una playlist (vedi sezione \ref*{statoarte}) viene automaticamente creata una progressive Web App: un'applicazione navigabile direttamente dal browser e completamente impostabile dal creatore dei contenuti permettendo un'interazione maggiore dell'utente finale.}
 
@@ -35,7 +36,7 @@ LiveSignage è un’applicazione per il digital signage sviluppata per vari disp
 
 All'inizio del tirocinio il client di LiveSignage era già disponibile per dispositivi di Samsung e Raspberry.  
 
-L'idea alla base dell'applicazione è quella di mostrare una serie di slide organizzate in playlist; ogni slide può mostrare diversi tipi di contenuti come ad esempio immagini, video, web page, mappe, notizie, input esterni \note{spiegare meglio}. Le playlist possono essere di diverso tipo:
+L'idea alla base dell'applicazione è quella di mostrare una serie di slide organizzate in playlist; ogni slide può mostrare diversi tipi di contenuti come ad esempio immagini, video, web page, mappe, notizie, input esterni (ad esempio telecamere e fogli di calcolo). Le playlist possono essere di diverso tipo:
 
 \begin{itemize}
     \item Semplici: le slide vengono mostrate a schermo intero e si susseguono continuamente;
@@ -73,7 +74,7 @@ La figura \ref*{fig:architettura} mostra in maniera schematica l'architettura de
     \caption{Schermata della Web Page per programmare il display.} 
     \label{fig:schermata-web}
 \end{figure}
-\note{figura web page piú grande}
+% \note{figura web page piú grande}
 
 \section{Requisiti}
 \edit{Lo svolgimento del lavoro è incentrato sullo sviluppo di un'applicazione client per il sistema operativo WebOS signage di LG; questa deve essere in grado di mostrare contenuti multimediali tramite l'uso di HTML e CSS su un web engine basato su Chromium, deve poter eseguire degli script JavaScript e comunicare con il device tramite l'uso delle interfacce messe a disposizione dal sistema operativo.
