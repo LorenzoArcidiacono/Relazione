@@ -2,5 +2,8 @@
     "todo-tree.general.tagGroups": {
     
     },
-    "todo-tree.general.enableFileWatcher": true
+    "todo-tree.general.enableFileWatcher": true,
+    "cSpell.words": [
+        "Livesignage"
+    ]
 }

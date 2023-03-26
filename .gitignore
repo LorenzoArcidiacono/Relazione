@@ -4,3 +4,6 @@ out.nosync
 DocLS.pdf
 .DS_Store
 .vscode/setting.json
+webos_client_archi.drawio
+.gitignore
+.$webos_client_archi.drawio.bkp

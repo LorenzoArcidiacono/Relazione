@@ -1,18 +1,58 @@
-\chapter{LiveSignage su WebOs}\label{svolgimento}
+\chapter{Livesignage su WebOs}\label{svolgimento}
 \section{In Breve}
 Descrizione del lavoro svolto: \edit{portare l'applicazione già esistente per i dispositivi Samsung sui dispositivi LG}, difficoltà incontrate e soluzioni trovate, modifiche all'applicazione pre-esistente. Descrizione della fase di testing finale.
 
 \section{Fase di analisi}
-\subsection{Codice LiveSignage}
+
+Nelle prime fasi del tirocinio il lavoro ha riguardato l'analisi dell'applicazione preesistente, della documentazione delle interfacce messe a disposizione da LG e lo studio dei linguaggi di programmazione utilizzati (vedi \ref*{linguaggi}).
+
+Nella Fig.\ref*{fig:architettura_2} è presentato uno schema dell'architettura dell'applicazione lato client in cui sono mostrate le componenti principali: Livesignage, il sistema operativo e il web server che ospita il back office.
+
+\begin{itemize}
+    \item Web server: qui vengono salvati in un database MySQL tutte le informazioni degli utenti, dei dispositivi e le playlist create, tutte queste informazioni vengono elaborate e inviate ai client attraverso una socket;
+    \item Livesignage: dopo aver aperto stabilito il canale di comunicazione con il web server resta in attesa dei messaggi da questo inviati e si occupa di svolgere le operazioni richieste comunicando, tramite le interfacce di sistema, con il sistema operativo sottostante.
+    \item \tomodify{Sistema operativo: riceve le richieste da parte dell'applicazione e una volta effettuate le operazioni chiama una funzione di callback definita precedentemente su cui è inviata la risposta.}
+\end{itemize}
+
+Gli altri componenti del sistema sono: il database principale su cui viene salvato il codice HTML delle playlist, il database dei log in cui sono scritti i messaggi di errore in modo che siano successivamente \tomodify{scaricabili} dal creatore di contenuti e la cartella degli assets nella quale vengono salvate le immagini e i video delle playlist create in modo che queste possano essere visualizzate anche offline.
+
+\subsection{Codice Livesignage}
+
+Di seguito è presentata brevemente la struttura dell'applicazione.
+
 \subsubsection{Suddivisione in classi}
-\subsection{Documentazione WebOs Signage}
+
+Nella cartella principale sono presenti 3 file HTML: 
+\begin{itemize}
+    \item index.html: è la prima pagina ad essere caricata e si occupa di chiamare le funzioni Javascript per controllare se il device sia stato precedentemente associato a Livesignage.
+    \item noAssociation.html: questa pagina viene caricata nel caso che il dispositivo non sia associato e mostra un codice univoco per l'associazione.
+    \item display.html: questa è la pagina in cui viene iniettato il codice delle playlist e dei plugin.
+\end{itemize}
+
+Il resto dei file fondamentali si trova nella cartella js, qui sono raccolti gli script e le classi necessarie al corretto svolgimento dell'applicazione:
+
+\begin{itemize}
+    \item association.js: classe che controlla e gestisce l'associazione del device;
+    \item connection.js: i metodi di questa classe vengono chiamati ciclicamente per verificare lo stato della connessione;
+    \item db.js: classe che si occupa della gestione del database principale, verrà vista in maniera più approfondita ( insieme a dblog.js ) in \ref*{database};
+    \item dblog.js: qui è contenuta la gestione del database degli errori;
+    \item display.js: in questa classe sono definiti i metodi che implementano la comunicazione con il sistema operativo attraverso le API. Alcune di queste implementazioni verranno \tomodify{evidenziate} in \ref*{webos_doc};
+    \item filemanager.js: si occupa della gestione del file system del sistema e del download e della cancellazione degli assets;
+    \item livesignage.js: in questa classe sono contenuti i metodi per la visualizzazione delle playlist, la gestione di alcuni comandi ricevuti dal server come il cambio di slide e il passaggio alla visualizzazione dell'ingresso HDMI e le richieste di salvataggio e cancellazione delle playlist dal database;
+    \item log.js: qui sono presenti i metodi per la creazione dei messaggi di errore e l'invio di questi al back office in modo che possano essere visualizzati dal cliente;
+    \item main.js: questo è lo script principale che si occupa di chiamare le altre classi, in particolare controlla se sia necessario scaricare un aggiornamento dell'applicazione o del firmware del sistema operativo (vedi \ref*{update}), chiama a intervalli di tempo i metodi per il controllo della connessione, invoca i metodi che si occupano della comunicazione con il back office e, se il display risulta offline, avvia la visualizzazione dell'ultima playlist salvata.
+    \item monitor.js: questa classe si occupa di aprire la socket verso il back office e di restare in ascolto su questa, alla ricezione dei messaggi chiama i metodi necessari.
+    \item speedtest.js: questa classe viene invocata quando si riceve una richiesta per valutare lo stato della rete dal back office.
+\end{itemize}
+
+\subsection{Documentazione WebOs Signage}\label{webos_doc}
 
 \section{Cambiamenti di logiche e scelte implementative}
 \subsection{Lettura e scrittura dei database} \label{database}
 \subsection{Cancellazione del localStorage}
 \subsection{Gestione della connessione}
 \subsection{Gestione dei timer}
-\subsection{Aggiornamento del firmware di sistema e dell'applicazione}
+\subsection{Aggiornamento del firmware di sistema e dell'applicazione}\label{update}
 \subsection{Gestione input del telecomando}
 
 \section{Fase di testing}
