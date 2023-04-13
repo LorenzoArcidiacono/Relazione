@@ -80,10 +80,29 @@ Sono state anche studiate le informazioni hardware e software dei dispositivi ce
 
 \section{Scrittura delle classi JavaScript}
 
-\lstinputlisting[language=JavaScript, firstline=0, lastline=18]{listings/svolgimento/api_sample.js}
+\subsection{Codice delle chiamate alle API}
+Le chiamate API per i dispositivi LG sono di due tipi, le prime ( Listing \ref*{lst:apiget} ) servono per chiedere delle informazioni al sistema operati come ad esempio il numero seriale, il mac address o il livello del volume, le seconde (Listing \ref*{lst:apipost}) servono per modificare delle impostazioni di sistema come il volume, lo stato del dispositivo (accensione e spegnimento) o la rotazione dello schermo. In entrambi i casi vengono passate due funzioni dette di callback che saranno eseguite in caso di successo o fallimento della chiamata, le chiamate di \tomodify{modifica del sistema} necessitano inoltre di una struttura contenente i nuovi valori da impostare.
+
+In risposta viene passato un oggetto alle funzioni di callback, in listing \ref*{lst:returnsample} vengono mostrati due esempi: uno in caso di successo, uno di fallimento.
+
+\lstinputlisting[caption={Esempio chiamata API WebOS.}, label={lst:apiget}, language=JavaScript, firstline=0, lastline=18]{listings/svolgimento/api_sample.js}
+\lstinputlisting[caption={Esempio chiamata API WebOS.}, label={lst:apipost}, language=JavaScript, firstline=37, lastline=54]{listings/svolgimento/api_sample.js}
+\lstinputlisting[caption={Esempi dei messaggi di risposta.}, label={lst:returnsample}, language=JavaScript, firstline=20, lastline=34]{listings/svolgimento/api_sample.js}
+
+\tomodify{A causa della natura asincrona di queste funzioni è stato necessario spesso gestire l'attesa delle risposte e la sincronizzazione con il resto del codice.} Si è inoltre cercato di ridurre il numero di chiamate alle API, per diminuire in maniera sostanziale i ritardi causati da queste, salvando i dati destinati a perdurare nel tempo nel LocalStorage: un oggetto definito dal browser che permette di salvare in maniera temporanea delle coppie di oggetti chiave-valore. Tuttavia, non essendo assicurata dal browser la \tomodify{perseveranza} di questo oggetto sono stati implementati tutti i controlli necessari. In \ref*{freestorage} saranno evidenziati i problemi relativi alla capacità del localStorage e alle soluzioni trovate al fine di bilanciare la velocità di esecuzione e la disponibilità dello spazio di memoria.
+
+\subsection{Flusso principale}
+
+La prima funzione invocata al momento dell'avvio è \jscode{start()} definita in \jscode{main.js} che, come prima cosa controlla se sia disponibile un'aggiornamento dell'applicazione o del firmware, in tal caso scarica l'aggiornamento e, dopo aver riavviato il dispositivo, lo installa; in caso non siano presenti aggiornamenti o il download non è riuscito invia una richiesta al server per verificare se il display sia già stato associato in caso affermativo riceve le informazioni relative al contenuto da mostrare, altrimenti viene generato un codice per svolgere l'associazione tramite il portale online. Nel caso in cui il display risulti offline all'avvio viene controllato quale sia l'ultimo contenuto salvato sul database e, se disponibile, viene mostrato fino a che non sia possibile collegarsi con il server.
+
+Viene inoltre avviato il controllo periodico, mediante la \tomodify{funzione} \jscode{setInterval}, della connessione (Listing \ref*{lst:checkconnection}) \tomodify{inviando un messaggio a un URL e controllando lo stato della risposta.}
+
+\lstinputlisting[caption={Controllo dello stato della connesione.}, label={lst:checkconnection}, language=JavaScript]{listings/svolgimento/checkconnection.js}
+
+
 \section{Cambiamenti di logiche e scelte implementative}
 \subsection{Lettura e scrittura dei database} \label{database}
-\subsection{Cancellazione del localStorage}
+\subsection{Cancellazione del localStorage} \label{freestorage}
 \subsection{Gestione della connessione}
 \subsection{Gestione dei timer}
 \subsection{Aggiornamento del firmware di sistema e dell'applicazione}\label{update}
