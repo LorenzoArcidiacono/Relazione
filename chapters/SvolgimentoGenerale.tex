@@ -99,10 +99,30 @@ Viene inoltre avviato il controllo periodico, mediante la \tomodify{funzione} \j
 
 \lstinputlisting[caption={Controllo dello stato della connesione.}, label={lst:checkconnection}, language=JavaScript]{listings/svolgimento/checkconnection.js}
 
+\tomodify{Durante il flusso principale viene mantenuta aperta una socket di comunicazione con il web server in mondo da poter ricevere, in caso di cambiamenti che il creatore di contenuti ha fatto nel backoffice o dovuti a fattori esterni (meteo, posizione, orario), un messaggio contenente le operazioni che il client deve effettuare ed eventuali nuove playlist da mostrare.}
+
 
 \section{Cambiamenti di logiche e scelte implementative}
 \subsection{Lettura e scrittura dei database} \label{database}
+
+All'arrivo dei dati dall backoffice o in caso di un cambiamento della playlist o l'inserimento del plugin tutti i dati sono salvati in un database in modo da assicurare che anche nel caso di assenza di rete l'ultimo contenuto mostrato sia in ogni caso disponibile.
+
+Non essendo possibile l'utilizzo di un database SQL è stata usata la libreria Dixie.js \cite{dixie} che permette di salvare i dati necessari in un file di testo, correttamente formattato, e accedere i dati come chiave - valore. \note{perchè cazzo ogni volta scriviamo tutto il file da capo anzi che aggiungere una entry?}
+
+Durante lo studio della documentazione LG è stato osservato che il buffer di memoria per la lettura e scrittura di un file è solo di 10 KB; è stato quindi necessario implementare le funzioni di scrittura e lettura di un file in maniera ricorsiva. Dal momento che il numero di chiamate risultanti è necessariamente elevato e i tempi di esecuzione intorno ai 30s è stato inoltre deciso di implementare le due funzioni in modo asincrono rispetto al resto del flusso di esecuzione. 
+
+Nonostante questo il carico di lavoro risulta piuttosto elevato e di conseguenza i rallentamenti dei contenuti mostrati risultano comunque evidenti durante la scrittura del database. 
+
+\lstinputlisting[caption={Scrittura ricorsiva del database.}, label={lst:dbwrite}, language=JavaScript]{listings/svolgimento/databasewrite.js}
+
+In Listing \ref*{lst:dbwrite} sono mostrate le due funzioni usate per la scrittura del database; Inizialmente viene eliminato il file precedentemente salvato e, in caso di successo,prima viene fatto un encoding in bytes della stringa rappresentante il contenuto del file e successivamente la funzione di \jscode{doStoreFile()} scrive 10KB alla volta nel sul file system.
+
 \subsection{Cancellazione del localStorage} \label{freestorage}
+
+I dati relativi alle playlist e ai plugin vengono salvati, oltre che sul database, anche nel localStorage in modo da ridurre i tempi di lettura dei dati e avere un minor numero di letture del database. 
+
+In seguito ai test è stato osservato che la memoria disponibile del localStorage è relativamente limitata, intorno ai 5 MB, ed è stato quindi necessario gestire tutte le scritture e le conseguenti cancellazioni dei dati salvati in questa memoria. È stato fatto in modo che solo i dati necessari al contenuto mostrato al momento restino salvati nel localStorage per permettere un rapido accesso e vengano cancellati al momento del cambio del contenuto prestando particolare attenzione nel mantenere i dati relativi alle immagini e video precedentemente scaricati in modo da non doverli scaricare più volte così da mantenere libera la memoria del dispositivo e ridurre le chiamate e i tempi di esecuzione al momento del cambio di contenuto. 
+
 \subsection{Gestione della connessione}
 \subsection{Gestione dei timer}
 \subsection{Aggiornamento del firmware di sistema e dell'applicazione}\label{update}
