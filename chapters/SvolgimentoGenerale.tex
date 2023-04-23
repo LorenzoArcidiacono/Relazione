@@ -105,28 +105,79 @@ Viene inoltre avviato il controllo periodico, mediante la \tomodify{funzione} \j
 \section{Cambiamenti di logiche e scelte implementative}
 \subsection{Lettura e scrittura dei database} \label{database}
 
-All'arrivo dei dati dall backoffice o in caso di un cambiamento della playlist o l'inserimento del plugin tutti i dati sono salvati in un database in modo da assicurare che anche nel caso di assenza di rete l'ultimo contenuto mostrato sia in ogni caso disponibile.
+All'arrivo dei dati dall backoffice o in caso di un cambiamento della playlist o l'inserimento del plugin tutti i dati sono salvati in un database in modo da assicurare che, anche nel caso di assenza di rete, l'ultimo contenuto mostrato sia in ogni caso disponibile.
 
-Non essendo possibile l'utilizzo di un database SQL è stata usata la libreria Dixie.js \cite{dixie} che permette di salvare i dati necessari in un file di testo, correttamente formattato, e accedere i dati come chiave - valore. \note{perchè cazzo ogni volta scriviamo tutto il file da capo anzi che aggiungere una entry?}
+Non essendo possibile l'utilizzo di un database SQL è stata usata la libreria Dixie.js \cite{dixie} che permette di salvare i dati necessari in un file di testo, correttamente formattato, e accederli tramite indicizzazione chiave - valore. Il file viene letto all'avvio dell'applicazione e viene creato il database. Il salvataggio del database avviene sovrascrivendo il vecchio file nel file system.
 
-Durante lo studio della documentazione LG è stato osservato che il buffer di memoria per la lettura e scrittura di un file è solo di 10 KB; è stato quindi necessario implementare le funzioni di scrittura e lettura di un file in maniera ricorsiva. Dal momento che il numero di chiamate risultanti è necessariamente elevato e i tempi di esecuzione intorno ai 30s è stato inoltre deciso di implementare le due funzioni in modo asincrono rispetto al resto del flusso di esecuzione. 
+Durante lo studio della documentazione LG è stato osservato che il buffer di memoria per la lettura e scrittura di un file è solo di 10 KB; è stato quindi necessario implementare le funzioni di scrittura e lettura di un file in maniera ricorsiva.
+Dal momento che il numero di chiamate necessarie a portare a termine le operazioni è elevato ed i tempi di esecuzione intorno ai 30s è stato inoltre deciso di implementare le due funzioni in modo asincrono rispetto al resto del flusso di esecuzione. 
 
-Nonostante questo il carico di lavoro risulta piuttosto elevato e di conseguenza i rallentamenti dei contenuti mostrati risultano comunque evidenti durante la scrittura del database. 
+Nonostante questo il carico di lavoro risulta piuttosto elevato e di conseguenza i rallentamenti dei contenuti mostrati risultano comunque evidenti soprattutto durante la scrittura del database. 
 
 \lstinputlisting[caption={Scrittura ricorsiva del database.}, label={lst:dbwrite}, language=JavaScript]{listings/svolgimento/databasewrite.js}
 
 In Listing \ref*{lst:dbwrite} sono mostrate le due funzioni usate per la scrittura del database; Inizialmente viene eliminato il file precedentemente salvato e, in caso di successo,prima viene fatto un encoding in bytes della stringa rappresentante il contenuto del file e successivamente la funzione di \jscode{doStoreFile()} scrive 10KB alla volta nel sul file system.
 
+Sono state pensate diverse soluzioni possibili, tra le quali: il salvataggio di un minor numero di dati, la suddivisione in database distinti per gli assets e il codice delle playlist o la cancellazione periodica dei dati più vecchi. Al momento nessuna di queste opzioni è risultata applicabile o per motivi legati alla struttura del database o per manutenibilità rispetto agli altri client.
+
 \subsection{Cancellazione del localStorage} \label{freestorage}
 
 I dati relativi alle playlist e ai plugin vengono salvati, oltre che sul database, anche nel localStorage in modo da ridurre i tempi di lettura dei dati e avere un minor numero di letture del database. 
 
-In seguito ai test è stato osservato che la memoria disponibile del localStorage è relativamente limitata, intorno ai 5 MB, ed è stato quindi necessario gestire tutte le scritture e le conseguenti cancellazioni dei dati salvati in questa memoria. È stato fatto in modo che solo i dati necessari al contenuto mostrato al momento restino salvati nel localStorage per permettere un rapido accesso e vengano cancellati al momento del cambio del contenuto prestando particolare attenzione nel mantenere i dati relativi alle immagini e video precedentemente scaricati in modo da non doverli scaricare più volte così da mantenere libera la memoria del dispositivo e ridurre le chiamate e i tempi di esecuzione al momento del cambio di contenuto. 
+In seguito ai test è stato osservato che la memoria disponibile nel localStorage è relativamente limitata, intorno ai 5 MB, ed è stato quindi necessario gestire tutte le scritture e le conseguenti cancellazioni dei dati salvati in questa memoria. È stato fatto in modo che solo i dati necessari al contenuto programmato restino salvati nel localStorage per permettere un rapido accesso e vengano cancellati al momento del cambio del contenuto, prestando particolare attenzione nel mantenere i dati relativi alle immagini e video precedentemente scaricati in modo da non doverli scaricare più volte: al fine di mantenere libera la memoria del dispositivo e ridurre il numero delle chiamate e i tempi di esecuzione al momento del cambio di contenuto.
 
 \subsection{Gestione della connessione}
 \subsection{Gestione dei timer}
 \subsection{Aggiornamento del firmware di sistema e dell'applicazione}\label{update}
+
+Rispetto agli altri client una delle API, messe a disposizione dal sistema, permette di scaricare e aggiornare il firmware del sistema operativo a partire da un URL che punti al file di aggiornamento.
+È stato quindi aggiunta la possibilità di inviare un messaggio, tramite la socket, al sistema contenente l'URL dell'aggiornamento. L'applicazione si occuperà quindi di scaricare e installare l'aggiornamento o, in caso di errore, mantenere la versione attuale \tomodify{senza la perdita di informazioni}.
+
+Di seguito è riportata la funzione che si occupa del download e dell'aggiornamento del firmware.
+
+\lstinputlisting[caption={Aggiornamento del firmware.}, label={lst:fwupd}, language=JavaScript]{listings/svolgimento/firmware_update.js}
+
+Ad ogni avvio viene inoltre controllato se l'applicazione deve essere aggiornata.
+Come mostrato in Listing \ref*{lst:updls} per prima cosa si imposta un timeout in modo da dare il tempo al device di stabilire la connessione a internet, successivamente viene fatta una chiamata alle API del backoffice per controllare quale sia la versione online corrente dell'applicazione e, nel caso questa differisca da quella installata al momento, viene scaricata e installata.
+
+\lstinputlisting[caption={Aggiornamento applicazione.}, label={lst:updls}, language=JavaScript]{listings/svolgimento/upd_ls.js}
+
+Anche in questo caso una copia del file dell'applicazione attuale viene mantenuta in memoria fino al momento dell'aggiornamento, in modo che il client possa funzionare in caso di errore durante il download o l'aggiornamento.
+
 \subsection{Gestione input del telecomando}
+
+Un'altra importante funzionalità aggiunta è stata quella di poter cambiare le funzionalità dei testi del telecomando all'interno dell'applicazione.
+Questo, oltre a evitare che \tomodify{persone esterne} possano interagire con il display,permette di personalizzare l'esperienza utente e le funzionalità dell'applicazione senza la necessità di passare dal back office.
+
+In WebOs è presente una tabella (una versione semplificata è mostrata nella Tabella \ref*{tab:keycode}) che indica tutti i codici che un telecomando può inviare, usa stringa rappresentate il loro nome e se quel comando sia gestito dal sistema o dall'applicazione.
+
+\begin{table}
+    \centering
+    \begin{tabular}{ |c|c|c| } 
+         \hline
+         409 & Signage.KeyCode.POWER & 0 \\  
+         \hline
+         461 & Signage.KeyCode.BACK & 0 \\  
+         \hline
+         601 & Signage.KeyCode.EXIT & 0 \\  
+         \hline
+         ... & ... & ...\\
+         \hline
+    \end{tabular}
+    \caption{Codici telecomando} \label{tab:keycode}
+\end{table}
+    
+Per modificare la funzione di un comando è quindi necessario indicare nella tabella che questo sarà gestito dall'applicazione e successivamente indicare quale azione eseguire. In Listing \ref*{lst:setkey} è mostrata la funzione che si occupa di cambiare il dato nella tabella e in Listing \ref*{lst:getkey} viene mostrato come alla ricezione di un segnale, in questo caso \jscode{Signage.KeyCode.RIGHT_ARROW}, venga eseguito una certa funzione.
+
+\lstinputlisting[caption={Modifica tabella comandi.}, label={lst:setkey}, language=JavaScript, firstline=0, lastline=19]{listings/svolgimento/keycode.js}
+\lstinputlisting[caption={Ricezione di un segnale.}, label={lst:getkey}, language=JavaScript, firstline=20, lastline=50]{listings/svolgimento/keycode.js}
+
+In alcuni casi, ad esempio il segnale di spegnimento, il comando viene prima gestito dall'applicazione e successivamente inviato al sistema. Questo permette di gestire alcuni momenti critici, come l'uscita dall'applicazione, per poter salvare i dati necessari o inviare i dati per le statistiche.
+In Listing \ref*{lst:keysys} viene mostrata la chiamata che si occupa di inviare il segnale al sistema.
+
+\lstinputlisting[caption={Invio di un segnale al sistema.}, label={lst:keysys}, language=JavaScript, firstline=52, lastline=70]{listings/svolgimento/keycode.js}
+
+I comandi che rientrano in questo caso sono stati ridotti al minimo e si è cercato di rendere il tempo di esecuzione il più breve possibile al fine di mantenere un'esperienza utente \tomodify{naturale}.
 
 \section{Fase di testing}
 

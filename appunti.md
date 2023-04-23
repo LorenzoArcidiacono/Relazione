@@ -27,17 +27,17 @@
 
 ## Svolgimento Generale
 [ ] analisi del codice
-    [ ] suddivisione dei file js
+    [x] suddivisione dei file js
 [ ] analisi documentazione
 [ ] scelte implementative
-    [ ] Lettura e scrittura DB
-    [ ] Cancellazione LocalStorage
+    [x] Lettura e scrittura DB
+    [x] Cancellazione LocalStorage
     [ ] Gestione dei Timer
-    [ ] Aggiornamento Firmware e Applicazione
+    [x] Aggiornamento Firmware e Applicazione
     [ ] Cambio URL (?)
     [ ] Gestione connessione
-    [ ] Lettura tasti telecomando
-    [ ] Classe CSS video (?)
+        [ ] Socket in generale
+    [x] Lettura tasti telecomando
 [ ] testing
 
 ## Aggiunte e studio
