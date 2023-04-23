@@ -1,4 +1,4 @@
-\chapter{Livesignage su WebOs}\label{svolgimento}
+\chapter{Livesignage su WebOS}\label{svolgimento}
 \section{In Breve}
 Descrizione del lavoro svolto: \edit{portare l'applicazione già esistente per i dispositivi Samsung sui dispositivi LG}, difficoltà incontrate e soluzioni trovate, modifiche all'applicazione pre-esistente. Descrizione della fase di testing finale.
 
@@ -36,7 +36,7 @@ Il resto dei file fondamentali si trova nella cartella js, qui sono raccolti gli
     \item connection.js: i metodi di questa classe vengono chiamati ciclicamente per verificare lo stato della connessione;
     \item db.js: classe che si occupa della gestione del database principale, verrà vista in maniera più approfondita ( insieme a dblog.js ) in \ref*{database};
     \item dblog.js: qui è contenuta la gestione del database degli errori;
-    \item display.js: in questa classe sono definiti i metodi che implementano la comunicazione con il sistema operativo attraverso le API. Alcune di queste implementazioni verranno \tomodify{evidenziate} in \ref*{webos_doc};
+    \item display.js: in questa classe sono definiti i metodi che implementano la comunicazione con il sistema operativo attraverso le API. Alcune di queste implementazioni verranno \tomodify{evidenziate} in \ref*{WebOS_doc};
     \item filemanager.js: si occupa della gestione del file system del sistema e del download e della cancellazione degli assets;
     \item livesignage.js: in questa classe sono contenuti i metodi per la visualizzazione delle playlist, la gestione di alcuni comandi ricevuti dal server come il cambio di slide e il passaggio alla visualizzazione dell'ingresso HDMI e le richieste di salvataggio e cancellazione delle playlist dal database;
     \item log.js: qui sono presenti i metodi per la creazione dei messaggi di errore e l'invio di questi al back office in modo che possano essere visualizzati dal cliente;
@@ -45,19 +45,19 @@ Il resto dei file fondamentali si trova nella cartella js, qui sono raccolti gli
     \item speedtest.js: questa classe viene invocata quando si riceve una richiesta per valutare lo stato della rete dal back office.
 \end{itemize}
 
-\subsection{Documentazione WebOs Signage}\label{webos_doc}
+\subsection{Documentazione WebOS Signage}\label{WebOS_doc}
 
 Dopo l'analisi dell'applicazione preesistente è stata studiata la documentazione (disponibile in \cite{LgDoc}) dei dispositivi LG.
 
 Come detto in \ref*{api} sono state analizzate le diverse interfacce messe a disposizone dal sistema per la comunicazione tra il browser e il sistema operativo; le librerie disponibili sono: 
 \begin{itemize}
-    \item SCAP API: un set di interfacce specifiche per WebOs Signage, la versione di WebOs dedicata ai sistemi di digital signage, \tomodify{suddivise in diverse classi a seconda del loro uso}. Questo è il set scelto per lo sviluppo poiché, sebbene non sia il più recente, è l'unico compatibile con tutti i device di digital signage di LG e che abbia un set ampio di interfacce tale da coprire i requisiti dell'applicazione;
-    \item IDCAP API: è il nuovo standard di API di LG che ha come obbiettivo quello di rendere univoche le interfacce per le diverse versioni di WebOs sia quella per il digital signage che quella per le Tv commerciali. Nonostante questo set sia quello raccomandato da LG è supportato solamente da WebOs Signage 6.0 e successivi;
-    \item Harmony API: una libreria, specifica per WebOs Signage, contenente le interfacce per la comunicazione con alcuni dispositivi esterni come ad esempio stampanti, sensori NFC e infrarossi;
+    \item SCAP API: un set di interfacce specifiche per WebOS Signage, la versione di WebOS dedicata ai sistemi di digital signage, \tomodify{suddivise in diverse classi a seconda del loro uso}. Questo è il set scelto per lo sviluppo poiché, sebbene non sia il più recente, è l'unico compatibile con tutti i device di digital signage di LG e che abbia un set ampio di interfacce tale da coprire i requisiti dell'applicazione;
+    \item IDCAP API: è il nuovo standard di API di LG che ha come obbiettivo quello di rendere univoche le interfacce per le diverse versioni di WebOS sia quella per il digital signage che quella per le Tv commerciali. Nonostante questo set sia quello raccomandato da LG è supportato solamente da WebOS Signage 6.0 e successivi;
+    \item Harmony API: una libreria, specifica per WebOS Signage, contenente le interfacce per la comunicazione con alcuni dispositivi esterni come ad esempio stampanti, sensori NFC e infrarossi;
     \item CustomJS API: questo set aggiunge alcune interfacce mancanti alla libreria SCAP. Questa libreria è aggiunta all'applicazione sviluppata al fine di espanderne le funzionalità (si veda \ref*{aggiunte}).
 \end{itemize}
 
-Sono state anche studiate le informazioni hardware e software dei dispositivi cercando di capire quali fossero \tomodify{le possibilità} minime comuni a tutti. Dal momento che le componenti software e hardware sono molto diverse tra loro sono stati presi in considerazione solo i dispositivi che sopportano almeno WebOs signage 4.0. Di seguito sono riportate le specifiche e le versioni dei linguaggi di programmazione supportate che sono state definite dopo l'analisi.
+Sono state anche studiate le informazioni hardware e software dei dispositivi cercando di capire quali fossero \tomodify{le possibilità} minime comuni a tutti. Dal momento che le componenti software e hardware sono molto diverse tra loro sono stati presi in considerazione solo i dispositivi che sopportano almeno WebOS signage 4.0. Di seguito sono riportate le specifiche e le versioni dei linguaggi di programmazione supportate che sono state definite dopo l'analisi.
 
 \begin{center}
 \begin{tabular}{ |l|r| } 
@@ -127,7 +127,9 @@ I dati relativi alle playlist e ai plugin vengono salvati, oltre che sul databas
 In seguito ai test è stato osservato che la memoria disponibile nel localStorage è relativamente limitata, intorno ai 5 MB, ed è stato quindi necessario gestire tutte le scritture e le conseguenti cancellazioni dei dati salvati in questa memoria. È stato fatto in modo che solo i dati necessari al contenuto programmato restino salvati nel localStorage per permettere un rapido accesso e vengano cancellati al momento del cambio del contenuto, prestando particolare attenzione nel mantenere i dati relativi alle immagini e video precedentemente scaricati in modo da non doverli scaricare più volte: al fine di mantenere libera la memoria del dispositivo e ridurre il numero delle chiamate e i tempi di esecuzione al momento del cambio di contenuto.
 
 \subsection{Gestione della connessione}
+% TODO da fare, aggiungere socket
 \subsection{Gestione dei timer}
+% TODO da fare
 \subsection{Aggiornamento del firmware di sistema e dell'applicazione}\label{update}
 
 Rispetto agli altri client una delle API, messe a disposizione dal sistema, permette di scaricare e aggiornare il firmware del sistema operativo a partire da un URL che punti al file di aggiornamento.
@@ -149,7 +151,7 @@ Anche in questo caso una copia del file dell'applicazione attuale viene mantenut
 Un'altra importante funzionalità aggiunta è stata quella di poter cambiare le funzionalità dei testi del telecomando all'interno dell'applicazione.
 Questo, oltre a evitare che \tomodify{persone esterne} possano interagire con il display,permette di personalizzare l'esperienza utente e le funzionalità dell'applicazione senza la necessità di passare dal back office.
 
-In WebOs è presente una tabella (una versione semplificata è mostrata nella Tabella \ref*{tab:keycode}) che indica tutti i codici che un telecomando può inviare, usa stringa rappresentate il loro nome e se quel comando sia gestito dal sistema o dall'applicazione.
+In WebOS è presente una tabella (una versione semplificata è mostrata nella Tabella \ref*{tab:keycode}) che indica tutti i codici che un telecomando può inviare, usa stringa rappresentate il loro nome e se quel comando sia gestito dal sistema o dall'applicazione.
 
 \begin{table}
     \centering
@@ -180,5 +182,5 @@ In Listing \ref*{lst:keysys} viene mostrata la chiamata che si occupa di inviare
 I comandi che rientrano in questo caso sono stati ridotti al minimo e si è cercato di rendere il tempo di esecuzione il più breve possibile al fine di mantenere un'esperienza utente \tomodify{naturale}.
 
 \section{Fase di testing}
-
+\note{problemi incontrati, due dispositivi, ottimizzazione localStorage e database.}
 
