@@ -8,17 +8,22 @@ Nelle prime fasi del tirocinio il lavoro ha riguardato l'analisi dell'applicazio
 
 Nella Fig.\ref*{fig:architettura_2} è presentato uno schema dell'architettura dell'applicazione lato client in cui sono mostrate le componenti principali: Livesignage, il sistema operativo e il web server che ospita il back office.
 
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width= 1\textwidth]{images/svolgimento/webos_client_archi.jpg} 
+    \caption{Architettura del client e dei componenti con cui comunica.} 
+    \label{fig:architettura_2}
+\end{figure}
+
 \begin{itemize}
-    \item Web server: qui vengono salvati in un database MySQL tutte le informazioni degli utenti, dei dispositivi e le playlist create, tutte queste informazioni vengono elaborate e inviate ai client attraverso una socket;
+    \item Web server: qui vengono salvati in un database MySQL tutte le informazioni degli utenti, dei dispositivi e le playlist create, tutte queste informazioni vengono elaborate e inviate ai client attraverso una socket. Questo si occupa inoltre di caricare sul cloud le immagini e i video caricati dal creatore di contenuti;
     \item Livesignage: dopo aver stabilito il canale di comunicazione con il web server, resta in attesa dei messaggi da questo inviati e si occupa di svolgere le operazioni richieste comunicando, tramite le interfacce, con il sistema operativo sottostante.
-    \item \tomodify{Sistema operativo: riceve le richieste da parte dell'applicazione e una volta effettuate le operazioni chiama una funzione di callback definita precedentemente su cui è inviata la risposta.}
+    \item Sistema operativo: gestisce le richieste fatte da Livesignage tramite API, una volta che queste sono portate a termine chiama le funzioni di callback passate come parametri dell'API (vedi \ref*{apicode}).
 \end{itemize}
 
-Gli altri componenti del sistema sono: il database principale su cui viene salvato il codice HTML delle playlist, il database dei log in cui sono scritti i messaggi di errore in modo che siano successivamente \tomodify{scaricabili} dal creatore di contenuti e la cartella degli assets nella quale vengono salvate le immagini e i video delle playlist create in modo che queste possano essere visualizzate anche offline.
+Gli altri componenti del sistema sono: il database principale su cui viene salvato il codice HTML delle playlist, il database dei log in cui sono scritti i messaggi di errore in modo che siano successivamente scaricabili dal creatore di contenuti e la cartella degli assets nella quale vengono salvate le immagini e i video delle playlist create in modo che queste possano essere visualizzate anche offline.
 
 \subsection{Codice Livesignage}
-
-\tomodify{Di seguito è presentata brevemente la struttura dell'applicazione.}
 
 \subsubsection{Suddivisione del codice}
 
@@ -36,7 +41,7 @@ Il resto dei file fondamentali si trova nella cartella \jscode{js/}, qui sono ra
     \item connection.js: i metodi di questa classe vengono chiamati ciclicamente per verificare lo stato della connessione;
     \item db.js: classe che si occupa della gestione del database principale, verrà vista in maniera più approfondita ( insieme a dblog.js ) in \ref*{database};
     \item dblog.js: qui è contenuta la gestione del database degli errori;
-    \item display.js: in questa classe sono definiti i metodi che implementano la comunicazione con il sistema operativo attraverso le API. Alcune di queste implementazioni verranno \tomodify{evidenziate} in \ref*{WebOS_doc};
+    \item display.js: in questa classe sono definiti i metodi che implementano la comunicazione con il sistema operativo attraverso le API. Alcune di queste implementazioni verranno approfondite in \ref*{js_code};
     \item filemanager.js: si occupa della gestione del file system del sistema e del download e della cancellazione degli assets;
     \item livesignage.js: in questa classe sono contenuti i metodi per la visualizzazione delle playlist, la gestione di alcuni comandi ricevuti dal server come: il cambio di slide, il passaggio alla visualizzazione dell'ingresso HDMI e le richieste di salvataggio e cancellazione delle playlist dal database;
     \item log.js: qui sono presenti i metodi per la creazione dei messaggi di errore e l'invio di questi al back office in modo che possano essere visualizzati dal cliente;
@@ -51,7 +56,7 @@ Dopo l'analisi dell'applicazione preesistente è stata studiata la documentazion
 
 Come detto in \ref*{api} sono state analizzate le diverse interfacce messe a disposizone dal sistema per la comunicazione tra il browser e il sistema operativo; le librerie disponibili sono: 
 \begin{itemize}
-    \item SCAP API: un set di interfacce specifiche per WebOS Signage, la versione di WebOS dedicata ai sistemi di digital signage, \tomodify{suddivise in diverse classi a seconda del loro uso}. Questo è il set scelto per lo sviluppo poiché, sebbene non sia il più recente, è l'unico compatibile con tutti i device di digital signage di LG e che abbia un set ampio di interfacce tale da coprire i requisiti dell'applicazione;
+    \item SCAP API: un set di interfacce specifiche per WebOS Signage, la versione di WebOS dedicata ai sistemi di digital signage,suddivise in diverse classi a seconda delle funzionalità. Questo è il set scelto per lo sviluppo poiché, sebbene non sia il più recente, è l'unico compatibile con tutti i device di digital signage di LG e che abbia un set ampio di interfacce tale da coprire i requisiti dell'applicazione;
     \item IDCAP API: è il nuovo standard di API di LG che ha come obiettivo quello di rendere univoche le interfacce per le diverse versioni di WebOS sia quella per il digital signage che quella per le TV commerciali. Nonostante questo set sia quello raccomandato da LG è supportato solamente da WebOS Signage 6.0 e successivi;
     \item Harmony API: una libreria, specifica per WebOS Signage, contenente le interfacce per la comunicazione con alcuni dispositivi esterni come ad esempio stampanti, sensori NFC e infrarossi;
     \item CustomJS API: questo set aggiunge alcune interfacce mancanti alla libreria SCAP. Questa libreria è aggiunta all'applicazione sviluppata al fine di espanderne le funzionalità (si veda \ref*{aggiunte}).
@@ -78,10 +83,10 @@ Sono state anche studiate le caratteristiche hardware e software dei dispositivi
 \end{tabular}
 \end{center}
 
-\section{Scrittura delle classi JavaScript}
+\section{Scrittura delle classi JavaScript}\label{js_code}
 
-\subsection{Codice delle chiamate alle API}
-Le chiamate API per i dispositivi LG sono di due tipi, le prime ( Listing \ref*{lst:apiget} ) servono per chiedere delle informazioni al sistema operativo come ad esempio il numero seriale, il MAC address o il \tomodify{livello} del volume, le seconde (Listing \ref*{lst:apipost}) servono per modificare delle impostazioni di sistema come il volume, lo stato del dispositivo (accensione e spegnimento) o la rotazione dello schermo. In entrambi i casi vengono passate due funzioni dette di callback che saranno eseguite in caso di successo o fallimento della chiamata, le chiamate di \tomodify{modifica del sistema} necessitano inoltre di una struttura contenente i nuovi valori da impostare.
+\subsection{Codice delle chiamate alle API} \label{apicode}
+Le chiamate API per i dispositivi LG sono di due tipi, le prime ( Listing \ref*{lst:apiget} ) servono per chiedere delle informazioni al sistema operativo come ad esempio il numero seriale, il MAC address o il livello del volume, le seconde (Listing \ref*{lst:apipost}) servono per modificare delle impostazioni di sistema come il volume, lo stato del dispositivo (accensione e spegnimento) o la rotazione dello schermo. In entrambi i casi vengono passate due funzioni dette di callback che saranno eseguite in caso di successo o fallimento della chiamata, le chiamate di modifica del device necessitano inoltre di una struttura contenente i nuovi valori da impostare.
 
 In risposta viene passato un oggetto alle funzioni di callback, in listing \ref*{lst:returnsample} vengono mostrati due esempi: uno in caso di successo, uno di fallimento.
 
@@ -89,30 +94,43 @@ In risposta viene passato un oggetto alle funzioni di callback, in listing \ref*
 \lstinputlisting[caption={Esempio chiamata API WebOS.}, label={lst:apipost}, language=JavaScript, firstline=37, lastline=54]{listings/svolgimento/api_sample.js}
 \lstinputlisting[caption={Esempi dei messaggi di risposta.}, label={lst:returnsample}, language=JavaScript, firstline=20, lastline=34]{listings/svolgimento/api_sample.js}
 
-\tomodify{A causa della natura asincrona di queste funzioni è stato necessario spesso gestire l'attesa delle risposte e la sincronizzazione con il resto del codice.} Si è inoltre cercato di ridurre il numero di chiamate alle API, per diminuire in maniera sostanziale i ritardi causati da queste, salvando i dati destinati a perdurare nel tempo nel LocalStorage: un oggetto definito dal browser che permette di salvare in maniera temporanea delle coppie di oggetti chiave-valore. Tuttavia, non essendo assicurata dal browser la \tomodify{persistenza} di questo oggetto sono stati implementati tutti i controlli necessari. In \ref*{freestorage} saranno evidenziati i problemi relativi alla capacità del localStorage e alle soluzioni trovate al fine di bilanciare la velocità di esecuzione e la disponibilità dello spazio di memoria.
+Poichè queste funzioni sono asincrone e quindi indipendenti dalla normale esecuzione del codice rispetto al è stato necessario gestire l'attesa delle risposte e la sincronizzazione con il resto del codice. Si è inoltre cercato di ridurre il numero di chiamate alle API, per diminuire in maniera sostanziale i ritardi causati da queste, salvando i dati destinati a perdurare nel tempo nel LocalStorage: un oggetto definito dal browser che permette di salvare in maniera temporanea delle coppie di oggetti chiave-valore. Tuttavia, non essendo assicurata dal browser la persistenza di questo oggetto sono stati implementati tutti i controlli necessari. In \ref*{freestorage} saranno evidenziati i problemi relativi alla capacità del localStorage e alle soluzioni trovate al fine di bilanciare la velocità di esecuzione e la disponibilità dello spazio di memoria.
 
-\subsection{Flusso principale}
+\subsection{Flusso principale}\label{flusso_principale}
 
-La prima funzione invocata al momento dell'avvio è \jscode{start()} definita in \jscode{main.js} che, come prima cosa controlla se sia disponibile un aggiornamento dell'applicazione o del firmware. Una volta scaricata la nuova versione, dopo aver riavviato il dispositivo, la installa; in caso non siano presenti aggiornamenti o il download non sia riuscito, viene inviata una richiesta al server per verificare se il display sia già stato associato o meno. In caso affermativo, riceve le informazioni relative al contenuto da mostrare, altrimenti viene generato un codice alfanumerico \note{identificativo del display da dover poi inserire} per svolgere l'associazione tramite il portale online. Nel caso in cui il display risulti offline all'avvio viene controllato quale sia l'ultimo contenuto salvato sul database e, se disponibile, viene mostrato fino a che non sia possibile collegarsi con il server.
+La prima funzione invocata al momento dell'avvio è \jscode{start()} definita in \jscode{main.js} che, come prima cosa controlla se sia disponibile un aggiornamento dell'applicazione o del firmware. Una volta scaricata la nuova versione, dopo aver riavviato il dispositivo, la installa; in caso non siano presenti aggiornamenti o il download non sia riuscito, viene inviata una richiesta al server per verificare se il display sia già stato associato o meno. In caso affermativo, riceve le informazioni relative al contenuto da mostrare, altrimenti viene generato un codice alfanumerico che identifica il display, da dover poi inserire, per svolgere l'associazione, nel portale online. Nel caso in cui il display risulti offline all'avvio viene controllato quale sia l'ultimo contenuto salvato sul database e, se disponibile, viene mostrato fino a che non sia possibile collegarsi con il web server e ricevere eventuali nuovi contenuti.
 
-Viene inoltre avviato il controllo periodico, mediante la \tomodify{funzione built-in} \jscode{setInterval}, della connessione (Listing \ref*{lst:checkconnection}) \tomodify{inviando un messaggio a un URL e controllando lo stato della risposta.}
+Viene inoltre avviato il controllo periodico, mediante la funzione built-in \jscode{setInterval}, della connessione (Listing \ref*{lst:checkconnection}): viene quindi periodicamente fatta una chiamata HTTP a un URL predefinito e si controlla che questa vada a buon fine (vedi \ref*{connection}).
 
 \lstinputlisting[caption={Controllo dello stato della connesione.}, label={lst:checkconnection}, language=JavaScript]{listings/svolgimento/checkconnection.js}
 
-\tomodify{Durante il flusso principale viene mantenuta aperta una socket di comunicazione con il web server in mondo da poter ricevere, in caso di cambiamenti che il creatore di contenuti ha fatto nel backoffice o dovuti a fattori esterni (meteo, posizione, orario), un messaggio contenente le operazioni che il client deve effettuare ed eventuali nuove playlist da mostrare.}
-
-
 \section{Cambiamenti di logiche e scelte implementative}
+
+\subsection{Protocollo di comunicazione e gestione della connessione}\label{connection}
+
+Durante il flusso principale viene mantenuta aperta una socket di comunicazione con il web server in mondo da poter ricevere, in caso di cambiamenti che il creatore di contenuti ha fatto nel back office o dovuti a fattori esterni (meteo, posizione, orario), un messaggio contenente le operazioni che il client deve effettuare ed eventuali nuove playlist da mostrare. 
+
+La classe \jscode{Monitor} si occupa della gestione della socket e all'arrivo di un messaggio chiama le funzioni da eseguire per portare a termine l'operazione richiesta: in Listing \ref*{lst:monitor} viene mostrata una visione parziale della funzione \jscode{parseMessagge()} che si occupa di tutta la gestione.
+
+\lstinputlisting[caption={parseMessage().}, label={lst:monitor}, language=JavaScript]{listings/svolgimento/monitor.js}
+
+Nel caso in cui la socket venga chiusa o a causa di errori o per mancanza di connessione il device viene ritenuto offline: si provvede quindi a eliminare momentaneamente i contenuti che necessitano di una connessione attiva ( meteo, notizie, video online) e viene avviato un meccanismo che prova a riaprire la socket ad intervalli di tempo prestabiliti.
+A seguito dei test è stato notato che questo protocollo non assicura di accorgersi in maniera tempestiva dell'assenza di rete ed è stato quindi necessario implementare un secondo protocollo, mostrato in \ref*{flusso_principale}, in cui periodicamente viene fatta una chiamata HTTP per controllare che sia presente la connessione.
+
+La necessità di accorgersi velocemente della mancanza di connessione è dovuta alla presenza delle fonti esterne citate sopra che, qualora non abbiano accesso alla rete, possono mostrare errori, dati non aggiornati o addirittura bloccare l'esecuzione dell'applicazione.
+
 \subsection{Lettura e scrittura dei database} \label{database}
 
-All'arrivo dei dati dal back office o in caso di un cambiamento della playlist o l'inserimento del plug-in tutti i dati sono salvati in un database in modo da assicurare che, anche nel caso di assenza di rete, l'ultimo contenuto mostrato sia in ogni caso disponibile.
+Al fine di garantire che anche in caso di assenza di connessione e ridurre il numero di chiamate HTTP e conseguenti download degli assets necessari, all'arrivo dei dati dal back office: al momento del cambio di una playlist o dell'inserimento di un plug-in, tutti i dati sono salvati in locale su un database non relazionale.
 
-Non essendo possibile l'utilizzo di un database SQL è stata usata la libreria Dixie.js \cite{dixie} che permette di salvare i dati necessari in un file di testo, correttamente formattato, e accederli tramite indicizzazione chiave - valore. Il file viene letto all'avvio dell'applicazione e viene creato il database. Il salvataggio del database avviene sovrascrivendo il vecchio file nel file system \note{aggiungi qualcosa}.
+Non essendo possibile l'utilizzo di un database SQL è stata usata la libreria Dixie.js \cite{dixie} che permette di salvare i dati necessari in un file di testo, appositamente formattato, e accederli tramite indicizzazione chiave - valore. Il file viene letto all'avvio dell'applicazione e viene creato il database che sarà quindi accessibile tramite le funzioni della libreria. Il salvataggio del database avviene sovrascrivendo il vecchio file nel file system.
 
-Durante lo studio della documentazione LG è stato osservato che il buffer di memoria per la lettura e scrittura di un file è solo di 10 KB \note {controlla che sia KB e non kb}; è stato quindi necessario implementare le funzioni di scrittura e lettura di un file in maniera ricorsiva.
-Dal momento che il numero di chiamate necessarie a portare a termine le operazioni è elevato ed i tempi di esecuzione intorno ai 30s, è stato quindi deciso di implementare le due funzioni in modo asincrono rispetto al resto del flusso di esecuzione. 
+Dixie.js si occupa di creare e leggere le entry nell'\jscode{IndexedDB}: un database NoSQL presente nel web browser. Come il \jscode{localStorage} (vedi \ref*{freestorage}) questo database non assicura la persistenza dei dati ma è pensato, a differenza del primo, per ospitare una grande quantità di dati. La libreria, oltre a facilitare le operazioni di lettura e scrittura, permette di ricreare velocemente la struttura e i dati contenuti nel database al momento dell'ultimo salvataggio.
 
-Nonostante questo, il carico di lavoro risulta piuttosto elevato e di conseguenza i rallentamenti dei contenuti mostrati risultano comunque evidenti soprattutto durante la scrittura del database. 
+Durante lo studio della documentazione LG è stato osservato che il buffer di memoria per la lettura e scrittura di un file è solo di 10 KB; è stato quindi necessario implementare le funzioni di scrittura e lettura di un file in maniera ricorsiva.
+Dal momento che il numero di chiamate necessarie a portare a termine le operazioni è elevato ed i tempi di esecuzione intorno ai 30s, è stato quindi deciso di implementare le due funzioni in modo completamente asincrono rispetto al resto del flusso di esecuzione. 
+
+Nonostante questo, il carico di lavoro risulta piuttosto elevato e di conseguenza i rallentamenti dei contenuti mostrati sono comunque evidenti soprattutto durante la scrittura del database. 
 
 \lstinputlisting[caption={Scrittura ricorsiva del database.}, label={lst:dbwrite}, language=JavaScript]{listings/svolgimento/databasewrite.js}
 
@@ -122,20 +140,16 @@ Sono state pensate diverse soluzioni possibili, tra le quali: il salvataggio di 
 
 \subsection{Cancellazione del localStorage} \label{freestorage}
 
-\note {spiegare localStorage?}
+Il \jscode{localStorage} è un database formato da coppie chiave-valore presente direttamente sul web browser. Questo database è pensato per mantenere una piccola quantità di dati che devono essere disponibili a pagine HTML diverse, ma sempre nello stesso dominio, anche dopo aver eseguito il refresh. Nonostante i dati possano essere mantenuti in memoria anche tra diverse sessioni, la persistenza non è garantita.  
 
-I dati relativi alle playlist e ai plug-in vengono salvati, oltre che sul database, anche nel localStorage in modo da ridurre i tempi di lettura dei dati e avere un minor numero di letture del database. 
+Nell'applicazione le informazioni relative alle playlist e ai plug-in vengono salvate, oltre che sul database, anche nel \jscode{localStorage}; in questo modo vengono ridotti i tempi di accesso al dato, dovendo leggere le informazioni sul database solo in caso non siano presenti nel \jscode{localStorage}.
 
-In seguito ai test è stato osservato che la memoria disponibile nel localStorage è relativamente limitata, intorno ai 5 MB, ed è stato quindi necessario gestire tutte le scritture e le conseguenti cancellazioni dei dati salvati in questa memoria. Al fine di mantenere libera la memoria del dispositivo, senza aumentare il numero delle chiamate \note {al server} e i tempi di esecuzione al momento del cambio di contenuto, è stato fatto in modo che solo i dati necessari a quanto programmato restino salvati nel localStorage per permettere un rapido accesso e vengano cancellati al momento del cambio del contenuto. In questa esecuzione viene prestata particolare attenzione nel mantenere i dati relativi alle immagini e video precedentemente scaricati in modo che non debbano essere scaricati più volte.
+In seguito ai test è stato osservato che la memoria disponibile nel \jscode{localStorage} è limitata, intorno ai 5 MB per l'insieme di tutti i dati salvati e molto minore per la singola entry, ed è stato quindi necessario gestire tutte le scritture e le conseguenti cancellazioni dei dati salvati in questa struttura. Al fine di mantenere libera la memoria del dispositivo, di non aumentare il numero delle chiamate al web server e i tempi di esecuzione al momento del cambio di contenuto, è stato fatto in modo che solo i dati necessari a quanto programmato restino salvati nel localStorage per permettere un rapido accesso e vengano cancellati al momento del cambio del contenuto. In questa esecuzione è stata prestata particolare attenzione nel mantenere i dati relativi alle immagini e video precedentemente scaricati e al caso in cui una playlist venga solo aggiornata e non ci sia quindi bisogno di scaricare nuovamente tutto il contenuto.
 
-\subsection{Gestione della connessione}
-% TODO da fare, aggiungere socket
-\subsection{Gestione dei timer}
-% TODO da fare
 \subsection{Aggiornamento del firmware di sistema e dell'applicazione}\label{update}
 
 Rispetto agli altri client una delle API, messe a disposizione dal sistema, permette di scaricare e aggiornare il firmware del sistema operativo a partire da un URL che punti al file di aggiornamento.
-È stata quindi aggiunta la possibilità di inviare un messaggio, tramite la socket, al sistema contenente l'URL della nuova versione. L'applicazione si occuperà quindi di scaricare e installare l'aggiornamento o, in caso di errore, mantenere la versione attuale \tomodify{senza la perdita di informazioni}.
+È stata quindi aggiunta la possibilità di inviare un messaggio, tramite la socket, al sistema contenente l'URL della nuova versione. L'applicazione si occuperà quindi di scaricare e installare l'aggiornamento o, in caso di errore, mantenere la versione attuale senza la perdita di informazioni.
 
 Di seguito è riportata la funzione che si occupa del download e dell'aggiornamento del firmware.
 
@@ -151,7 +165,7 @@ Anche in questo caso una copia del file dell'applicazione attuale viene mantenut
 \subsection{Gestione input del telecomando}
 
 Un'altra importante funzionalità aggiunta è stata quella di poter cambiare la gestione dei segnali ricevuti dal telecomando all'interno dell'applicazione.
-Questo, oltre a evitare che \tomodify{persone esterne} possano interagire con il display, permette di personalizzare l'esperienza utente e le funzionalità dell'applicazione senza la necessità di passare dal back office.
+Questo, oltre a evitare che persone non autorizzate possano interagire con il display, permette di personalizzare l'esperienza utente e le funzionalità dell'applicazione senza la necessità di passare dal back office.
 
 In WebOS è presente una tabella (una versione semplificata è mostrata nella Tabella \ref*{tab:keycode}) dove sono indicati tutti i codici che un telecomando può inviare, la stringa che questi rappresentano e un valore che identifica se deve essere gestito dal sistema o dall'applicazione.
 
@@ -176,13 +190,25 @@ Per modificare la funzione di un segnale è quindi necessario inserire nella tab
 \lstinputlisting[caption={Modifica tabella comandi.}, label={lst:setkey}, language=JavaScript, firstline=0, lastline=19]{listings/svolgimento/keycode.js}
 \lstinputlisting[caption={Ricezione di un segnale.}, label={lst:getkey}, language=JavaScript, firstline=20, lastline=49]{listings/svolgimento/keycode.js}
 
-In alcuni casi, ad esempio il segnale di spegnimento, il comando viene prima gestito dall'applicazione e successivamente inviato al sistema. Questo permette di \tomodify{avere il controllo} di alcuni momenti critici, come l'uscita dall'applicazione, per poter salvare i dati necessari o inviare i dati per le statistiche.
+In alcuni casi, ad esempio il segnale di spegnimento, il comando viene prima gestito dall'applicazione e successivamente inviato al sistema. Questo permette di avere il controllo di alcuni momenti critici, come l'uscita dall'applicazione, per poter salvare i dati necessari o inviare i dati per le statistiche.
 In Listing \ref*{lst:keysys} viene mostrata la chiamata che si occupa di inviare il segnale al sistema.
 
 \lstinputlisting[caption={Invio di un segnale al sistema.}, label={lst:keysys}, language=JavaScript, firstline=50, lastline=70]{listings/svolgimento/keycode.js}
 
-I comandi che rientrano in questo caso sono stati ridotti al minimo e si è cercato di rendere il tempo di esecuzione il più breve possibile al fine di mantenere un'esperienza utente \tomodify{coerente}.
+I comandi che rientrano in questo caso sono stati ridotti al minimo e si è cercato di rendere il tempo di esecuzione il più breve possibile al fine di mantenere un'esperienza utente coerente.
 
 \section{Fase di testing}
-\note{problemi incontrati, due dispositivi, ottimizzazione localStorage e database.}
 
+La fase di test è stata suddivisa in due momenti: inizialmente sono state testate le singole funzionalità durante la scrittura dell'applicazione e successivamente sono stati svolti una serie di test, in maniera più approfondita, di tutto il sistema.
+
+La prima fase ha evidenziato molti dei problemi descritti precedentemente, dando quindi la possibilità di analizzarli e trovare soluzioni alternative.
+Nella seconda fase ci si è cercato di capire quali fossero i limiti, dovuti all'hardware e al software a disposizione:
+\begin{itemize}
+    \item Stress test: sono state inserite una serie di playlist contenenti un alto numero di slides di diverso tipo in modo da capire i tempi necessari al download, di scrittura del database e la reattività nel cambio tra le slide;
+    \item Test sulla rete: sono state testati i tempi entro cui il device si accorge dell'assenza di rete e delle tempistiche necessarie ad eliminare i contenuti non disponibili offline;
+    \item Test del browser: sono state inserite diverse slide il cui contenuto potesse risultare difficile da gestire per il browser e playlist composte da 4 playlist mostrate contemporaneamente.
+\end{itemize}
+
+Tutti i test sono stati svolti su entrambi i dispositivi: il media player si è dimostrato migliore per quanto riguarda la scrittura sul database mentre il display nei test del browser.
+
+In generale i dispositivi LG si sono dimostrati meno performanti rispetto a quelli Samsung (su cui era già disponibile Livesignage) ma hanno alcune caratteristiche uniche come la possibilità di mostrare fino a 4 video contemporaneamente e la maggiore compatibilità con le periferiche esterne (si veda \ref*{aggiunte}).

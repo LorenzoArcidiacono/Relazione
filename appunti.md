@@ -44,16 +44,17 @@
  [ ] WoL
  [ ] WebCam
  [ ] API non utilizzate
+ [ ] Harmony API
 
 # Cose da sistemare
 
 # note
 [ ] cambiare pugin con plug-in 
-[ ] cambiare WebOS ovunque e controllare online come cazzo si scrive
+[ ] cambiare WebOS ovunque e controllare online come si scrive
 [ ] JS ovunque maiuscolo
 [ ] controllare MAC o mac o Mac 
 [ ] tutti listing maiuscoli
-[ ] come cazzo si scrive back office? cambia ovunque broooooooooo grazie
+[ ] come  si scrive back office? cambia ovunque 
 [ ] riguardare tutti i time-out
 [ ] scrivere codice in italiano (Log) 
 
