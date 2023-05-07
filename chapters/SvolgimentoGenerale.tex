@@ -6,7 +6,7 @@ Descrizione del lavoro svolto: \edit{portare l'applicazione già esistente per i
 
 Nelle prime fasi del tirocinio il lavoro ha riguardato l'analisi dell'applicazione preesistente, della documentazione delle interfacce messe a disposizione da LG e lo studio dei linguaggi di programmazione utilizzati (vedi \ref*{linguaggi}).
 
-Nella Fig.\ref*{fig:architettura_2} è presentato uno schema dell'architettura dell'applicazione lato client in cui sono mostrate le componenti principali: Livesignage, il sistema operativo e il web server che ospita il back office.
+Nella Fig.\ref*{fig:architettura_2} è presentato uno schema dell'architettura dell'applicazione lato client e lato server in cui sono mostrate le componenti principali: Livesignage, il sistema operativo e il web server che ospita il back office.
 
 \begin{figure}[!htb]
     \centering
@@ -16,8 +16,8 @@ Nella Fig.\ref*{fig:architettura_2} è presentato uno schema dell'architettura d
 \end{figure}
 
 \begin{itemize}
-    \item Web server: qui vengono salvati in un database MySQL tutte le informazioni degli utenti, dei dispositivi e le playlist create, tutte queste informazioni vengono elaborate e inviate ai client attraverso una socket. Questo si occupa inoltre di caricare sul cloud le immagini e i video caricati dal creatore di contenuti;
-    \item Livesignage: dopo aver stabilito il canale di comunicazione con il web server, resta in attesa dei messaggi da questo inviati e si occupa di svolgere le operazioni richieste comunicando, tramite le interfacce, con il sistema operativo sottostante.
+    \item Web server: qui vengono salvati in un database MySQL tutte le informazioni degli utenti, dei dispositivi e le playlist create, tutte queste informazioni vengono elaborate e inviate ai client attraverso una socket. Questo si occupa inoltre di caricare su AWS le immagini e i video caricati dal creatore di contenuti in modo da essere scaricabili tramite link dai device client;
+    \item Livesignage: dopo aver stabilito il canale di comunicazione con il web server, resta in attesa dei messaggi da questo inviati e si occupa di svolgere le operazioni richieste tramite back office, dal creatore di contenuti, comunicando tramite le API a disposizione, con il sistema operativo sottostante.
     \item Sistema operativo: gestisce le richieste fatte da Livesignage tramite API, una volta che queste sono portate a termine chiama le funzioni di callback passate come parametri dell'API (vedi \ref*{apicode}).
 \end{itemize}
 
@@ -34,7 +34,7 @@ Nella cartella principale sono presenti 3 file HTML:
     \item display.html: questa è la pagina in cui viene iniettato il codice delle playlist e dei plug-in.
 \end{itemize}
 
-Il resto dei file fondamentali si trova nella cartella \jscode{js/}, qui sono raccolti gli script e le classi necessarie al corretto svolgimento dell'applicazione:
+Il resto dei file fondamentali si trova nella cartella \jscode{js/}, qui sono raccolti gli script e le classi necessarie al corretto funzionamento dell'applicazione:
 
 \begin{itemize}
     \item association.js: classe che controlla e gestisce l'associazione del device;
@@ -94,13 +94,17 @@ In risposta viene passato un oggetto alle funzioni di callback, in listing \ref*
 \lstinputlisting[caption={Esempio chiamata API WebOS.}, label={lst:apipost}, language=JavaScript, firstline=37, lastline=54]{listings/svolgimento/api_sample.js}
 \lstinputlisting[caption={Esempi dei messaggi di risposta.}, label={lst:returnsample}, language=JavaScript, firstline=20, lastline=34]{listings/svolgimento/api_sample.js}
 
-Poichè queste funzioni sono asincrone e quindi indipendenti dalla normale esecuzione del codice rispetto al è stato necessario gestire l'attesa delle risposte e la sincronizzazione con il resto del codice. Si è inoltre cercato di ridurre il numero di chiamate alle API, per diminuire in maniera sostanziale i ritardi causati da queste, salvando i dati destinati a perdurare nel tempo nel LocalStorage: un oggetto definito dal browser che permette di salvare in maniera temporanea delle coppie di oggetti chiave-valore. Tuttavia, non essendo assicurata dal browser la persistenza di questo oggetto sono stati implementati tutti i controlli necessari. In \ref*{freestorage} saranno evidenziati i problemi relativi alla capacità del localStorage e alle soluzioni trovate al fine di bilanciare la velocità di esecuzione e la disponibilità dello spazio di memoria.
+Poichè queste funzioni sono asincrone e quindi indipendenti dalla normale esecuzione del codice, è stato necessario gestire l'attesa delle risposte e la sincronizzazione con il resto del codice.
+
+\edit{Javascript non è un linguaggio multi-trhead ma può gestire delle funzioni asincrone tramite un call stack e un event loop che sono parte del ambiente di esecuizione JavaScript del browser: il call stack mantiene una coda di tutte le chiamate effettuate dal thread principale, l'event loop si occupa di prendere dalla coda ed eseguire le chiamate asincrone in un ambiente separato dal thread principale, spesso queste funzioni sono interfacce a metodi di basso livello implementati dal web engine in C o C++. In questo modo la funzione successiva nella coda può essere eseguita mentre quella bloccante è eseguita in background. Alle funzioni asincrone sono associate delle funzioni di callback: dei metodi che saranno inseriti nel call stack dall'event loop al termine della funzione bloccante \cite{MdN}.}
+
+Si è cercato di ridurre il numero di chiamate alle API, per diminuire in maniera sostanziale i ritardi causati da queste, salvando i dati destinati a perdurare nel tempo nel \jscode{localStorage}: un oggetto definito dal browser che permette di salvare in maniera temporanea delle coppie di oggetti chiave-valore. Tuttavia, non essendo assicurata dal browser la persistenza di questo oggetto sono stati implementati tutti i controlli necessari. In \ref*{freestorage} saranno evidenziati i problemi relativi alla capacità del localStorage e alle soluzioni trovate al fine di bilanciare la velocità di esecuzione e la disponibilità dello spazio di memoria.
 
 \subsection{Flusso principale}\label{flusso_principale}
 
-La prima funzione invocata al momento dell'avvio è \jscode{start()} definita in \jscode{main.js} che, come prima cosa controlla se sia disponibile un aggiornamento dell'applicazione o del firmware. Una volta scaricata la nuova versione, dopo aver riavviato il dispositivo, la installa; in caso non siano presenti aggiornamenti o il download non sia riuscito, viene inviata una richiesta al server per verificare se il display sia già stato associato o meno. In caso affermativo, riceve le informazioni relative al contenuto da mostrare, altrimenti viene generato un codice alfanumerico che identifica il display, da dover poi inserire, per svolgere l'associazione, nel portale online. Nel caso in cui il display risulti offline all'avvio viene controllato quale sia l'ultimo contenuto salvato sul database e, se disponibile, viene mostrato fino a che non sia possibile collegarsi con il web server e ricevere eventuali nuovi contenuti.
+La prima funzione invocata al momento dell'avvio è \jscode{start()} definita in \jscode{main.js} che, come prima cosa controlla se sia disponibile un aggiornamento dell'applicazione o del firmware. Una volta scaricata la nuova versione, dopo aver riavviato il dispositivo, la installa; in caso non siano presenti aggiornamenti o il download non sia riuscito, viene inviata una richiesta al server per verificare se il display sia già stato associato o meno. In caso affermativo, riceve le informazioni relative al contenuto da mostrare, altrimenti viene generato dall'applicazione client \edit{un codice alfanumerico che identifica il display; questo codice sarà poi inserito dal proprietario del display nel portale online in modo da associare il device}. Nel caso in cui il display risulti offline all'avvio viene controllato quale sia l'ultimo contenuto salvato sul database e, se disponibile, viene mostrato fino a che non sia possibile collegarsi con il web server e ricevere eventuali nuovi contenuti.
 
-Viene inoltre avviato il controllo periodico, mediante la funzione built-in \jscode{setInterval}, della connessione (Listing \ref*{lst:checkconnection}): viene quindi periodicamente fatta una chiamata HTTP a un URL predefinito e si controlla che questa vada a buon fine (vedi \ref*{connection}).
+Viene inoltre avviato il controllo a \edit{ intervalli di tempo prestabiliti}, mediante la funzione built-in \jscode{setInterval}, della connessione (Listing \ref*{lst:checkconnection}): viene inviata una richiesta tramite il protocollo HTTP a un URL predefinito e si controlla che questa vada a buon fine (vedi \ref*{connection}).
 
 \lstinputlisting[caption={Controllo dello stato della connesione.}, label={lst:checkconnection}, language=JavaScript]{listings/svolgimento/checkconnection.js}
 
@@ -108,7 +112,7 @@ Viene inoltre avviato il controllo periodico, mediante la funzione built-in \jsc
 
 \subsection{Protocollo di comunicazione e gestione della connessione}\label{connection}
 
-Durante il flusso principale viene mantenuta aperta una socket di comunicazione con il web server in mondo da poter ricevere, in caso di cambiamenti che il creatore di contenuti ha fatto nel back office o dovuti a fattori esterni (meteo, posizione, orario), un messaggio contenente le operazioni che il client deve effettuare ed eventuali nuove playlist da mostrare. 
+\edit{Durante il flusso principale viene mantenuta aperta una socket di comunicazione con il web server: su questa vengono ricevuti i messaggi da parte del back office in caso di cambiamenti ai contenuti da mostrare o alle impostazioni del device sia che siano selezionate direttamente dal creatore di contenuti sia se siano dovute ad automazioni predefinite dall'applicazione. Ad esempio è possibile impostare il cambiamento della playlist in base all'orario o al meteo.}
 
 La classe \jscode{Monitor} si occupa della gestione della socket e all'arrivo di un messaggio chiama le funzioni da eseguire per portare a termine l'operazione richiesta: in Listing \ref*{lst:monitor} viene mostrata una visione parziale della funzione \jscode{parseMessagge()} che si occupa di tutta la gestione.
 
@@ -123,11 +127,11 @@ La necessità di accorgersi velocemente della mancanza di connessione è dovuta 
 
 Al fine di garantire che anche in caso di assenza di connessione e ridurre il numero di chiamate HTTP e conseguenti download degli assets necessari, all'arrivo dei dati dal back office: al momento del cambio di una playlist o dell'inserimento di un plug-in, tutti i dati sono salvati in locale su un database non relazionale.
 
-Non essendo possibile l'utilizzo di un database SQL è stata usata la libreria Dixie.js \cite{dixie} che permette di salvare i dati necessari in un file di testo, appositamente formattato, e accederli tramite indicizzazione chiave - valore. Il file viene letto all'avvio dell'applicazione e viene creato il database che sarà quindi accessibile tramite le funzioni della libreria. Il salvataggio del database avviene sovrascrivendo il vecchio file nel file system.
+\edit{Dal momento che JavaScript non prevede i metodi per la comunicazione con un database SQL}, è stata usata la libreria Dixie.js \cite{dixie} che permette di salvare i dati necessari in un file di testo, appositamente formattato, e accederli tramite indicizzazione chiave - valore. Il file viene letto all'avvio dell'applicazione e viene creato il database che sarà quindi accessibile tramite le funzioni della libreria. Il salvataggio del database avviene sovrascrivendo il vecchio file nel file system.
 
 Dixie.js si occupa di creare e leggere le entry nell'\jscode{IndexedDB}: un database NoSQL presente nel web browser. Come il \jscode{localStorage} (vedi \ref*{freestorage}) questo database non assicura la persistenza dei dati ma è pensato, a differenza del primo, per ospitare una grande quantità di dati. La libreria, oltre a facilitare le operazioni di lettura e scrittura, permette di ricreare velocemente la struttura e i dati contenuti nel database al momento dell'ultimo salvataggio.
 
-Durante lo studio della documentazione LG è stato osservato che il buffer di memoria per la lettura e scrittura di un file è solo di 10 KB; è stato quindi necessario implementare le funzioni di scrittura e lettura di un file in maniera ricorsiva.
+Durante lo studio della documentazione LG è stato osservato che il buffer di memoria per la lettura e scrittura di un file è solo di 10 KB; è stato quindi necessario implementare le funzioni di scrittura e lettura di un file in maniera ricorsiva in modo che fosse possibile usarla come funzione di callback.
 Dal momento che il numero di chiamate necessarie a portare a termine le operazioni è elevato ed i tempi di esecuzione intorno ai 30s, è stato quindi deciso di implementare le due funzioni in modo completamente asincrono rispetto al resto del flusso di esecuzione. 
 
 Nonostante questo, il carico di lavoro risulta piuttosto elevato e di conseguenza i rallentamenti dei contenuti mostrati sono comunque evidenti soprattutto durante la scrittura del database. 
@@ -206,9 +210,9 @@ Nella seconda fase ci si è cercato di capire quali fossero i limiti, dovuti all
 \begin{itemize}
     \item Stress test: sono state inserite una serie di playlist contenenti un alto numero di slides di diverso tipo in modo da capire i tempi necessari al download, di scrittura del database e la reattività nel cambio tra le slide;
     \item Test sulla rete: sono state testati i tempi entro cui il device si accorge dell'assenza di rete e delle tempistiche necessarie ad eliminare i contenuti non disponibili offline;
-    \item Test del browser: sono state inserite diverse slide il cui contenuto potesse risultare difficile da gestire per il browser e playlist composte da 4 playlist mostrate contemporaneamente.
+    \item Test del web engine: sono state inserite diverse slide il cui contenuto potesse risultare difficile da gestire per il browser e playlist composte da 4 playlist mostrate contemporaneamente.
 \end{itemize}
 
-Tutti i test sono stati svolti su entrambi i dispositivi: il media player si è dimostrato migliore per quanto riguarda la scrittura sul database mentre il display nei test del browser.
+\edit{Tutti i test sono stati svolti su entrambi i dispositivi a disposizione: è stato notato che il media player si è dimostrato migliore per quanto riguarda la velocità di scrittura del file del database nel file system mentre il display riesce a gestire i maniera più fluida i contenuti da mostrare in particolare quando questi presentano molte animazioni o un alto numero di componenti.}
 
-In generale i dispositivi LG si sono dimostrati meno performanti rispetto a quelli Samsung (su cui era già disponibile Livesignage) ma hanno alcune caratteristiche uniche come la possibilità di mostrare fino a 4 video contemporaneamente e la maggiore compatibilità con le periferiche esterne (si veda \ref*{aggiunte}).
+\edit{In generale i dispositivi LG si sono dimostrati meno performanti rispetto a quelli Samsung (su cui era già disponibile Livesignage) ma hanno alcune caratteristiche uniche come la possibilità di mostrare fino a 4 video contemporaneamente e la maggiore compatibilità con le periferiche esterne (si veda \ref*{aggiunte}).}

@@ -10,7 +10,7 @@ Per lo svolgimento del tirocinio sono stati messi a disposizione due device LG c
     \item Un professional display con la versione 6.0.
 \end{itemize}
 
-Oltre alle differenze hardware i due modelli presentano importanti differenti al livello del software; sul primo è installato il web engine Chromium 53 e supporta solamente la visualizzazione di 2 video contemporaneamente, il secondo supporta fino a 4 video e ha installato Chromium 79.
+Oltre alle differenze hardware i due modelli presentano importanti differenti al livello del software; sul primo è installato il web engine Chromium 53 e supporta solamente la gestione di 2 video contemporaneamente \edit{mostrati sul display a cui è collegato}, il secondo supporta fino a 4 video e ha installato Chromium 79.
 
 La differenza di web engine ha comportato un'analisi approfondita delle librerie e delle funzioni JavaScript supportate e ha quindi guidato le scelte implementative del progetto.
 
@@ -25,7 +25,7 @@ Non avendo familiarità con i linguaggi e le tecnologie utilizzati si è reso ne
 
 \subsection{Scelta delle API} \label{api}
 
-Dal momento che il linguaggio Javascript, per questioni di sicurezza, non ha modo di comunicare con il sistema operativo sottostante in modo nativo, sono state messe a disposizione, dagli sviluppatori LG, delle interfacce implementate sottoforma di librerie Javascript per poter eseguire operazioni e ricevere informazioni dal device quali: informazioni di rete, stato del dispositivo, eventuali timer di accensione e spegnimento e gestione degli aggiornamenti dell'applicazione e del sistema operativo.
+Dal momento che il linguaggio Javascript, per questioni di sicurezza, non ha modo di comunicare con il sistema operativo sottostante in modo nativo, sono state messe a disposizione, dagli sviluppatori LG, delle interfacce implementate sotto forma di librerie Javascript per poter eseguire operazioni e ricevere informazioni dal device quali: informazioni di rete, stato del dispositivo, eventuali timer di accensione e spegnimento e gestione degli aggiornamenti dell'applicazione e del sistema operativo.
 
 I set di API (Application Programming Interface) messi a disposizione sono molteplici (come specificato in \cite{LgDoc}), tuttavia non tutti sono compatibili con tutte le versioni del sistema operativo. È stato quindi deciso di basare il progetto sul set SCAP (Signage Application Platform) API v1.8 poiché questo è supportato dalla maggior parte dei dispositivi LG in commercio. Alcune di queste interfacce saranno approfondite nel capitolo \ref*{svolgimento}.
 
