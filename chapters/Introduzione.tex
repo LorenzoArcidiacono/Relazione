@@ -3,15 +3,15 @@
 \linespread{1.5}
 
 \section{In Breve}
-Breve introduzione sullo scopo e svolgimento del tirocinio compreso il contesto in cui ho svolto il lavoro, sull'applicazione Livesignage e sua architettura, sullo stato dell'arte e sugli obiettivi raggiunti. Infine una descrizione della struttura di questa relazione.
+Breve introduzione sullo scopo e svolgimento del tirocinio compreso il contesto in cui ho svolto il lavoro, sull'applicazione Livesignage e sua architettura, sullo stato dell'arte e sugli obiettivi raggiunti. Infine una descrizione della struttura di questa relazione. \torevise{sistema l'italiamo per renderlo più discorsivo... In questa sezione....}
 
 \section{Scopo del tirocinio}
 
-\edit{Il tirocinio è stato svolto presso l'azienda Softhrod srl. di Volterra all'interno del progetto Livesignage, un'applicazione focalizzata sulla distribuzione di contenuti multimediali targettizzati. Lo scopo del tirocinio è l'analisi, la progettazione e lo sviluppo di un'applicazione lato client per il sistema operativo WebOs Signage sui dispositivi LG:  display professionali, videowall, smart TV, sistemi IoT, media player. L'applicazione deve essere in grado di mostare specifici contenuti multimediali sulla base di eventi acquisiti dall'ambiente circostante, come ad esempio condizioni metereologiche o orario, e parametri indicati dall'utente. L'applicazione è stata sviluppata in linguaggio Javascript sfruttando le API REST messe a disposizione dal sistema operativo.}
+\edit{Il tirocinio è stato svolto presso l'azienda Softhrod srl. di Volterra all'interno del progetto Livesignage, un'applicazione \torevise{Livesignage è un progetto o un'applicazioen? letto così suona male} focalizzata sulla distribuzione di contenuti multimediali targettizzati. Lo scopo del tirocinio è l'analisi, la progettazione e lo sviluppo di un'applicazione lato client per il sistema operativo WebOs Signage sui dispositivi LG:  display professionali, videowall, smart TV, sistemi IoT, media player. L'applicazione deve essere in grado di mostare specifici contenuti multimediali sulla base di eventi acquisiti dall'ambiente circostante, come ad esempio condizioni metereologiche o orario, e parametri indicati dall'utente. L'applicazione è stata sviluppata in linguaggio Javascript sfruttando le API REST messe a disposizione dal sistema operativo.}
 
 \section{Modalità di lavoro}
 
-Ho lavorato in modalità mista ( telematica e presenza ) in maniera prevalentemente autonoma, ma mantenendo un confronto diretto sia con gli altri sviluppatori sia con i designer per tutte le scelte riguardanti le logiche e lo sviluppo dell'applicazione. Ho così avuto modo di capire quale sia il processo produttivo dell'azienda, come si lavora in team e l'attenzione per l'esperienza utente, fondamentale per questo ambito.
+Ho lavorato in modalità mista ( telematica e presenza ) in maniera prevalentemente autonoma, ma mantenendo un confronto diretto sia con gli altri sviluppatori sia con i designer \torevise{progettisti} per tutte le scelte riguardanti le logiche e lo sviluppo dell'applicazione. Ho così avuto modo di capire quale sia il processo produttivo dell'azienda, come si lavora in team e l'attenzione per l'esperienza utente, fondamentale per questo ambito.
 
 \section{Digital signage e Livesignage}
 
@@ -21,7 +21,7 @@ Livesignage è un’applicazione per il digital signage sviluppata per vari disp
 
 \edit{Inoltre, alla creazione di una playlist (vedi sezione \ref*{statoarte}), viene automaticamente creata una progressive Web App: un'applicazione navigabile direttamente dal browser e completamente impostabile dal creatore dei contenuti permettendo un'interazione maggiore dell'utente finale.}
 
-\edit{Nella Figura \ref{fig:liveToursitSample} viene mostrato un esempio di quello che potrebbe essere mostrato su un totem installato in una città; tramite il codice QR creato automaticamente insieme ai contenuti mostrati, il consumatore può quindi ricevere le informazioni in modo più dettagliato sul proprio dispositivo mobile senza bisogno di scaricare applicazioni o fare ricerche online.}
+\edit{Nella Figura \ref{fig:liveToursitSample} viene mostrato \torevise{La Figura... illustra} un esempio di quello che potrebbe essere mostrato su un totem installato in una città; tramite il codice QR creato automaticamente insieme ai contenuti mostrati, il consumatore può quindi ricevere le informazioni in modo più dettagliato sul proprio dispositivo mobile senza bisogno di scaricare applicazioni o fare ricerche online.}
 
 \begin{figure}[!htb]
     \centering
@@ -63,10 +63,10 @@ Oltre alle playlist è possibile utilizzare dei plugin per poter dare al cliente
 
 \edit{L'applicazione è suddivisa in due parti: una parte è installata sul dispositivo per il digital signage, questa si occupa di riceve dal back office le playlist da mostrare e le impostazioni che il creatore di contenuti ha impostato (timer di accensione, volume, luminosità), la seconda parte è online ed è accessibile tramite una web page (Fig: \ref*{fig:schermata-web}): qui è possibile controllare alcune funzioni del device client, creare e impostare le proprie playlist e i plugin. 
 \nl
-Le modifiche impostate dal back office vengono comunicate al dispositivo che, tramite le interfacce offerte dal sistema, scrive i file necessari alla persistenza delle informazioni, scarica i contenuti multimediali necessari e configura le impostazioni selezionate.}
+Le modifiche impostate dal back office vengono comunicate al dispositivo che, tramite le interfacce offerte dal sistema, scrive i file necessari alla persistenza delle informazioni \torevise{spiegarsi meglio}, scarica i contenuti multimediali necessari e configura le impostazioni selezionate.}
 
 
-La figura \ref*{fig:architettura} mostra in maniera schematica l'architettura dell'applicazione e l'interazione con il consumatore.
+La figura \ref*{fig:architettura} mostra in maniera schematica l'architettura dell'applicazione e l'interazione con il consumatore. \torevise{figura un po' confusa: che cosa è "back office" che è rappresentato con una nuvoletta? Inoltre, davvero c'è una copia del DB in ogni device? E poi, come mai è nel device? la freccia etichettata QR Code dovrebbe essere unidirezionale, o sbaglio? manca un modello dinamico, che aiuterebbe a documentare meglio. Tipo un diagramma di sequenza }
 
 \begin{figure}[!htb]
     \centering
@@ -77,8 +77,10 @@ La figura \ref*{fig:architettura} mostra in maniera schematica l'architettura de
 % \note{figura web page piú grande}
 
 \section{Requisiti}
-\edit{Lo svolgimento del lavoro è incentrato sullo sviluppo di un'applicazione client per il sistema operativo WebOS signage di LG; questa deve essere in grado di mostrare contenuti multimediali tramite l'uso di HTML e CSS su un web engine basato su Chromium, deve poter eseguire degli script JavaScript e comunicare con il device tramite l'uso delle interfacce messe a disposizione dal sistema operativo.
+\edit{Lo svolgimento del lavoro è incentrato sullo sviluppo di un'applicazione client per il \torevise{sviluppata su}  sistema operativo WebOS signage di LG; questa deve essere in grado di mostrare contenuti multimediali tramite l'uso di HTML e CSS su un web engine basato su Chromium, deve poter eseguire degli script JavaScript e comunicare con il device tramite l'uso delle interfacce messe a disposizione dal sistema operativo.
 L'applicazione deve inoltre poter salvare in memoria i contenuti e le informazioni necessarie affinchè possa funzionare anche in assenza di connessione.} 
+
+\torevise{scrivere meglio i requisiti. passo passo, uno alla volta. Con applicazione client intanto cosa si intende? chiarirlo che tipocamente il lato client sarebbe lato cellulare dell'utilizzatore. Il web engine dove risiede? Gli script dove sono eseguiti? E comunque questi non sono requisiti funzionali, ma vincoli sull'architettura. }
 
 \section{Obiettivi raggiunti}
 
