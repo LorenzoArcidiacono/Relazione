@@ -142,7 +142,6 @@ Nonostante questo, il carico di lavoro risulta piuttosto elevato e di conseguenz
 Nel Listing \ref*{lst:dbwrite} sono mostrate le due funzioni usate per la scrittura del database; inizialmente viene eliminato il file precedentemente salvato e, in caso di successo, prima viene fatto un encoding in bytes della stringa rappresentante il contenuto del file e successivamente la funzione di \jscode{doStoreFile()} scrive 10KB alla volta sul file.
 
 Sono state pensate diverse soluzioni possibili, tra le quali: il salvataggio di un minor numero di dati, la suddivisione in database distinti per gli assets e il codice delle playlist o la cancellazione periodica dei dati più vecchi. Al momento nessuna di queste opzioni è risultata applicabile o per motivi legati alla struttura del database o per mantenibilità rispetto agli altri client.
-\torevise{in fase di presentazione giustificare meglio}
 
 \subsection{Cancellazione del localStorage} \label{freestorage}
 
@@ -170,7 +169,7 @@ Anche in questo caso una copia del file dell'applicazione attuale viene mantenut
 
 \subsection{Gestione input del telecomando}
 
-Un'altra importante funzionalità aggiunta è stata quella di poter cambiare la gestione dei segnali ricevuti dal telecomando \torevise{sbaglio, o è la prima volta che si parla di telecomando? parlarne anche nei requisiti} all'interno dell'applicazione.
+Un'altra importante funzionalità aggiunta è stata quella di poter cambiare la gestione dei segnali ricevuti dal telecomando  all'interno dell'applicazione.
 Questo, oltre a evitare che persone non autorizzate possano interagire con il display, permette di personalizzare l'esperienza utente e le funzionalità dell'applicazione senza la necessità di passare dal back office.
 
 In WebOS è presente una tabella (una versione semplificata è mostrata nella Tabella \ref*{tab:keycode}) dove sono indicati tutti i codici che un telecomando può inviare, la stringa che questi rappresentano e un valore che identifica se deve essere gestito dal sistema o dall'applicazione.
