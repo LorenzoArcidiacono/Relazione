@@ -1,10 +1,10 @@
 # Cose da ricordarsi
 
 ## Introduzione
-[ ] Cambiare immagine back-office
-[ ] Architettura
+[X] Cambiare immagine back-office
+[X] Architettura
     [x] cosa sono le playlist   
-[ ] eventi acquisiti: eventi 
+[X] eventi acquisiti: eventi 
 
 ##Correzioni proff
 [ ] Cercare di spiegare meglio cosa fa live signage, esempi che rendono più semplice la spiegazione. SENZA DIVENTARE MILANESE
@@ -20,41 +20,41 @@
 [ ] manca capitolo dei requisiti: casi d’uso, user stories
 	[ ] casi d’uso sono task che un attore può compiere con l’ausilio del sistema
 ## Tecnologie utilizzate
-[ ] jquery 
+[X] jquery 
 [ ] sdk di LG
-[ ] web OS 6.0, 4.0
-[ ] diversi set di API
+[X] web OS 6.0, 4.0
+[X] diversi set di API
 
 ## Svolgimento Generale
-[ ] analisi del codice
+[X] analisi del codice
     [x] suddivisione dei file js
-[ ] analisi documentazione
-[ ] scelte implementative
+[X] analisi documentazione
+[X] scelte implementative
     [x] Lettura e scrittura DB
     [x] Cancellazione LocalStorage
     [ ] Gestione dei Timer
     [x] Aggiornamento Firmware e Applicazione
     [ ] Cambio URL (?)
-    [ ] Gestione connessione
-        [ ] Socket in generale
+    [X] Gestione connessione
+        [X] Socket in generale
     [x] Lettura tasti telecomando
-[ ] testing
+[X] testing
 
 ## Aggiunte e studio
- [ ] WoL
- [ ] WebCam
- [ ] API non utilizzate
- [ ] Harmony API
+ [X] WoL
+ [X] WebCam
+ [X] API non utilizzate
+ [X] Harmony API
 
 # Cose da sistemare
 
 # note
-[ ] cambiare pugin con plug-in 
-[ ] cambiare WebOS ovunque e controllare online come si scrive
-[ ] JS ovunque maiuscolo
-[ ] controllare MAC o mac o Mac 
+[X] cambiare pugin con plug-in 
+[X] cambiare WebOS ovunque e controllare online come si scrive
+[X] JS ovunque maiuscolo
+[X] controllare MAC o mac o Mac 
 [ ] tutti listing maiuscoli
-[ ] come  si scrive back office? cambia ovunque 
-[ ] riguardare tutti i time-out
+[X] come  si scrive back office? cambia ovunque 
+[X] riguardare tutti i time-out
 [ ] scrivere codice in italiano (Log) 
 
