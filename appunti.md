@@ -49,12 +49,12 @@
 # Cose da sistemare
 
 # note
-[ ] cambiare pugin con plug-in 
-[ ] cambiare WebOS ovunque e controllare online come si scrive
-[ ] JS ovunque maiuscolo
-[ ] controllare MAC o mac o Mac 
+[X] cambiare pugin con plug-in 
+[X] cambiare WebOS ovunque e controllare online come si scrive
+[X] JS ovunque maiuscolo
+[X] controllare MAC o mac o Mac 
 [ ] tutti listing maiuscoli
-[ ] come  si scrive back office? cambia ovunque 
-[ ] riguardare tutti i time-out
+[X] come  si scrive back office? cambia ovunque 
+[X] riguardare tutti i time-out
 [ ] scrivere codice in italiano (Log) 
 

@@ -1,6 +1,6 @@
 \chapter{Livesignage su WebOS}\label{svolgimento}
 \section{In Breve}
-Descrizione del lavoro svolto: \edit{portare l'applicazione già esistente per i dispositivi Samsung sui dispositivi LG}, difficoltà incontrate e soluzioni trovate, modifiche all'applicazione pre-esistente. Descrizione della fase di testing finale.
+Descrizione del lavoro svolto: portare l'applicazione già esistente per i dispositivi Samsung sui dispositivi LG, difficoltà incontrate e soluzioni trovate, modifiche all'applicazione pre-esistente. Descrizione della fase di testing finale.
 
 \section{Fase di analisi}
 
@@ -29,7 +29,7 @@ Gli altri componenti del sistema sono: il database principale su cui viene salva
 
 Nella cartella principale sono presenti 3 file HTML: 
 \begin{itemize}
-    \item index.html: è la prima pagina ad essere caricata e si occupa di chiamare le funzioni Javascript per controllare se il device sia stato precedentemente associato a Livesignage.
+    \item index.html: è la prima pagina ad essere caricata e si occupa di chiamare le funzioni JavaScript per controllare se il device sia stato precedentemente associato a Livesignage.
     \item noAssociation.html: questa pagina viene caricata nel caso che il dispositivo non sia associato e mostra un codice univoco per l'associazione.
     \item display.html: questa è la pagina in cui viene iniettato il codice delle playlist e dei plug-in.
 \end{itemize}
@@ -96,7 +96,7 @@ In risposta viene passato un oggetto alle funzioni di callback, in listing \ref*
 
 Poichè queste funzioni sono asincrone e quindi indipendenti dalla normale esecuzione del codice, è stato necessario gestire l'attesa delle risposte e la sincronizzazione con il resto del codice.
 
-Javascript non è un linguaggio multi-trhead ma può gestire delle funzioni asincrone tramite un call stack e un event loop che sono parte del ambiente di esecuizione JavaScript del browser: il call stack mantiene una coda di tutte le chiamate effettuate dal thread principale, l'event loop si occupa di prendere dalla coda ed eseguire le chiamate asincrone in un ambiente separato dal thread principale, spesso queste funzioni sono interfacce a metodi di basso livello implementati dal web engine in C o C++. In questo modo la funzione successiva nella coda può essere eseguita mentre quella bloccante è eseguita in background. 
+JavaScript non è un linguaggio multi-trhead ma può gestire delle funzioni asincrone tramite un call stack e un event loop che sono parte del ambiente di esecuizione JavaScript del browser: il call stack mantiene una coda di tutte le chiamate effettuate dal thread principale, l'event loop si occupa di prendere dalla coda ed eseguire le chiamate asincrone in un ambiente separato dal thread principale, spesso queste funzioni sono interfacce a metodi di basso livello implementati dal web engine in C o C++. In questo modo la funzione successiva nella coda può essere eseguita mentre quella bloccante è eseguita in background. 
 \edit{Alle funzioni asincrone possono essere passate come parametri una o più funzioni, dette callback, da invocare alla fine dell'esecuzione dell'operazione asincrona; queste saranno inserite nell call stack dall'event loop.  \cite{MdN}.}
 
 \edit{In Listing \ref*{lst:callbacksample} si può vedere un esempio di queste funzioni: in questo caso la funzione asincrona è getNetworkInterface che si occupa di richiedere al sistema operativo le informazioni riguardanti la connessione, a questa vengono passate \jscode{successCb} e \jscode{failureCb}; alla fine dell'esecuzione dell'operazione asincrona,in caso di successo, verrà inserita nel call stack la funzione \jscode{successCb} e il parametro \jscode{cbObject} sarà l'oggetto contenente i dati ricevuti dal sistema.}
@@ -107,10 +107,10 @@ Si è cercato di ridurre il numero di chiamate alle API, per diminuire in manier
 
 \subsection{Flusso principale}\label{flusso_principale}
 
-La prima funzione invocata al momento dell'avvio è \jscode{start()} definita in \jscode{main.js} che, come prima cosa controlla se sia disponibile un aggiornamento dell'applicazione o del firmware. Una volta scaricata la nuova versione, dopo aver riavviato il dispositivo, la installa; in caso non siano presenti aggiornamenti o il download non sia riuscito, viene inviata una richiesta al server per verificare se il display sia già stato associato o meno. In caso affermativo, riceve le informazioni relative al contenuto da mostrare, altrimenti viene generato dall'applicazione client \edit{un codice alfanumerico che identifica il display; questo codice sarà poi inserito dal proprietario del display nel portale online in modo da associarvi il device}. Nel caso in cui il display risulti offline all'avvio viene controllato quale sia l'ultimo contenuto salvato sul database e, se disponibile, viene mostrato fino a che non sia possibile collegarsi con il web server e ricevere eventuali nuovi contenuti.
+La prima funzione invocata al momento dell'avvio è \jscode{start()} definita in \jscode{main.js} che, come prima cosa controlla se sia disponibile un aggiornamento dell'applicazione o del firmware. Una volta scaricata la nuova versione, dopo aver riavviato il dispositivo, la installa; in caso non siano presenti aggiornamenti o il download non sia riuscito, viene inviata una richiesta al server per verificare se il display sia già stato associato o meno. In caso affermativo, riceve le informazioni relative al contenuto da mostrare, altrimenti viene generato dall'applicazione client un codice alfanumerico che identifica il display; questo codice sarà poi inserito dal proprietario del display nel portale online in modo da associarvi il device. Nel caso in cui il display risulti offline all'avvio viene controllato quale sia l'ultimo contenuto salvato sul database e, se disponibile, viene mostrato fino a che non sia possibile collegarsi con il web server e ricevere eventuali nuovi contenuti.
 
 
-Viene inoltre avviato il controllo a \edit{ intervalli di tempo prestabiliti}, mediante la funzione built-in \jscode{setInterval}, della connessione (Listing \ref*{lst:checkconnection}): viene inviata una richiesta tramite il protocollo HTTP a un URL predefinito e si controlla che questa vada a buon fine (vedi \ref*{connection}).
+Viene inoltre avviato il controllo a intervalli di tempo prestabiliti, mediante la funzione built-in \jscode{setInterval}, della connessione (Listing \ref*{lst:checkconnection}): viene inviata una richiesta tramite il protocollo HTTP a un URL predefinito e si controlla che questa vada a buon fine (vedi \ref*{connection}).
 
 \lstinputlisting[caption={Controllo dello stato della connesione.}, label={lst:checkconnection}, language=JavaScript]{listings/svolgimento/checkconnection.js}
 
@@ -118,7 +118,7 @@ Viene inoltre avviato il controllo a \edit{ intervalli di tempo prestabiliti}, m
 
 \subsection{Protocollo di comunicazione e gestione della connessione}\label{connection}
 
-\edit{Durante il flusso principale viene mantenuta aperta una socket di comunicazione con il web server: su questa vengono ricevuti i messaggi da parte del back office in caso di cambiamenti ai contenuti da mostrare o alle impostazioni del device sia che siano selezionate direttamente dal creatore di contenuti sia se siano dovute ad automazioni predefinite dall'applicazione. Ad esempio è possibile impostare il cambiamento della playlist in base all'orario o al meteo.}
+Durante il flusso principale viene mantenuta aperta una socket di comunicazione con il web server: su questa vengono ricevuti i messaggi da parte del back office in caso di cambiamenti ai contenuti da mostrare o alle impostazioni del device sia che siano selezionate direttamente dal creatore di contenuti sia se siano dovute ad automazioni predefinite dall'applicazione. Ad esempio è possibile impostare il cambiamento della playlist in base all'orario o al meteo.
 
 La classe \jscode{Monitor} si occupa della gestione della socket e all'arrivo di un messaggio chiama le funzioni da eseguire per portare a termine l'operazione richiesta: in Listing \ref*{lst:monitor} viene mostrata una visione parziale della funzione \jscode{parseMessagge()} che si occupa di tutta la gestione.
 
@@ -133,7 +133,7 @@ La necessità di accorgersi velocemente della mancanza di connessione è dovuta 
 
 Al fine di garantire che anche in caso di assenza di connessione e ridurre il numero di chiamate HTTP e conseguenti download degli assets necessari, all'arrivo dei dati dal back office: al momento del cambio di una playlist o dell'inserimento di un plug-in, tutti i dati sono salvati in locale su un database non relazionale.
 
-\edit{Dal momento che JavaScript non prevede i metodi per la comunicazione con un database SQL}, è stata usata la libreria Dixie.js \cite{dixie} che permette di salvare i dati necessari in un file di testo, appositamente formattato, e accederli tramite indicizzazione chiave - valore. Il file viene letto all'avvio dell'applicazione e viene creato il database che sarà quindi accessibile tramite le funzioni della libreria. Il salvataggio del database avviene sovrascrivendo il vecchio file nel file system.
+Dal momento che JavaScript non prevede i metodi per la comunicazione con un database SQL, è stata usata la libreria Dixie.js \cite{dixie} che permette di salvare i dati necessari in un file di testo, appositamente formattato, e accederli tramite indicizzazione chiave - valore. Il file viene letto all'avvio dell'applicazione e viene creato il database che sarà quindi accessibile tramite le funzioni della libreria. Il salvataggio del database avviene sovrascrivendo il vecchio file nel file system.
 
 Dixie.js si occupa di creare e leggere le entry nell'\jscode{IndexedDB}: un database NoSQL presente nel web browser. Come il \jscode{localStorage} (vedi \ref*{freestorage}) questo database non assicura la persistenza dei dati ma è pensato, a differenza del primo, per ospitare una grande quantità di dati. La libreria, oltre a facilitare le operazioni di lettura e scrittura, permette di ricreare velocemente la struttura e i dati contenuti nel database al momento dell'ultimo salvataggio.
 
@@ -166,7 +166,7 @@ Di seguito è riportata la funzione che si occupa del download e dell'aggiorname
 \lstinputlisting[caption={Aggiornamento del firmware.}, label={lst:fwupd}, language=JavaScript]{listings/svolgimento/firmware_update.js}
 
 Ad ogni avvio viene inoltre controllato se l'applicazione deve essere aggiornata.
-Come mostrato in Listing \ref*{lst:updls} per prima cosa si imposta un time-out in modo da dare il tempo al device di stabilire la connessione a internet, successivamente viene fatta una chiamata alle API del backoffice per controllare quale sia la versione online corrente dell'applicazione e, nel caso questa differisca da quella installata al momento, viene scaricata e installata.
+Come mostrato in Listing \ref*{lst:updls} per prima cosa si imposta un time-out in modo da dare il tempo al device di stabilire la connessione a internet, successivamente viene fatta una chiamata alle API del back office per controllare quale sia la versione online corrente dell'applicazione e, nel caso questa differisca da quella installata al momento, viene scaricata e installata.
 
 \lstinputlisting[caption={Aggiornamento applicazione.}, label={lst:updls}, language=JavaScript]{listings/svolgimento/upd_ls.js}
 
@@ -219,6 +219,6 @@ Nella seconda fase ci si è cercato di capire quali fossero i limiti, dovuti all
     \item Test del web engine: sono state inserite diverse slide il cui contenuto potesse risultare difficile da gestire per il browser e playlist composte da 4 playlist mostrate contemporaneamente.
 \end{itemize}
 
-\edit{Tutti i test sono stati svolti su entrambi i dispositivi a disposizione: è stato notato che il media player si è dimostrato migliore per quanto riguarda la velocità di scrittura del file del database nel file system mentre il display riesce a gestire i maniera più fluida i contenuti da mostrare in particolare quando questi presentano molte animazioni o un alto numero di componenti.}
+Tutti i test sono stati svolti su entrambi i dispositivi a disposizione: è stato notato che il media player si è dimostrato migliore per quanto riguarda la velocità di scrittura del file del database nel file system mentre il display riesce a gestire i maniera più fluida i contenuti da mostrare in particolare quando questi presentano molte animazioni o un alto numero di componenti.
 
-\edit{In generale i dispositivi LG si sono dimostrati meno performanti rispetto a quelli Samsung (su cui era già disponibile Livesignage) ma hanno alcune caratteristiche uniche come la possibilità di mostrare fino a 4 video contemporaneamente e la maggiore compatibilità con le periferiche esterne (si veda \ref*{aggiunte}).}
+In generale i dispositivi LG si sono dimostrati meno performanti rispetto a quelli Samsung (su cui era già disponibile Livesignage) ma hanno alcune caratteristiche uniche come la possibilità di mostrare fino a 4 video contemporaneamente e la maggiore compatibilità con le periferiche esterne (si veda \ref*{aggiunte}).
