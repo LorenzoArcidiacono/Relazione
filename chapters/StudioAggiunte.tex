@@ -6,33 +6,33 @@ In questo capitolo si presenta una descrizione della fase di analisi e, quando p
 
 \section{Wake On Lan}
 
-\edit{Nei dispositivi LG è implementato il protocollo Wake on LAN cioè la possibilità di accendere il dispositivo da remoto tramite l'invio di un messaggio, da parte di un device sulla stessa LAN, con protocollo UDP.
-Il messaggio da inviare, chiamato magic packet, è formato da 102 bytes: i primi 6 rappresentano il numero 255 i successivi rappresentano l'indirizzo MAC del dispositivo ricevente.}
+Nei dispositivi LG è implementato il protocollo Wake on LAN cioè la possibilità di accendere il dispositivo da remoto tramite l'invio di un messaggio, da parte di un device sulla stessa LAN, con protocollo UDP.
+Il messaggio da inviare, chiamato magic packet, è formato da 102 bytes: i primi 6 rappresentano il numero 255 i successivi rappresentano l'indirizzo MAC del dispositivo ricevente \cite{wol}.
 
-\edit{I device LG danno la possibilità di attivare questo protocollo sia in caso di connessione cablata che wireless, sono state implementate quindi le chiamate per verificare lo stato e attivare il protocollo dal back office.}
+I device LG danno la possibilità di attivare questo protocollo sia in caso di connessione cablata che wireless, sono state implementate quindi le chiamate per verificare lo stato e attivare il protocollo dal back office.
 
-\edit{In Listing \ref*{lst:wol} sono mostrate le funzioni per attivare e richiedere lo stato del protocollo in base al tipo di connessione del dispositivo.}
+In Listing \ref*{lst:wol} sono mostrate le funzioni per attivare e richiedere lo stato del protocollo in base al tipo di connessione del dispositivo.
 
 \lstinputlisting[caption={Wake on LAN.}, label={lst:wol}, language=JavaScript]{listings/aggiunte/wol.js}
 
-\edit{Tuttavia, dal momento che il dispositivo ricevente il messaggio deve trovarsi nella stessa rete del dispositivo mittente, non è stato possibile inserire l'accensione remota nel back office; sarà quindi compito del proprietario del dispositivo LG inviare il messaggio tramite un'opportuna applicazione per smartphone o per computer.}
+Tuttavia, dal momento che il dispositivo ricevente il messaggio deve trovarsi nella stessa rete del dispositivo mittente, non è stato possibile inserire l'accensione remota nel back office; sarà quindi compito del proprietario del dispositivo LG inviare il messaggio tramite un'opportuna applicazione per smartphone o per computer.
 
 \section{Videochiamate}
 
-\edit{Dal momento che i dispositivi LG supportano l'uso di webcam collegate tramite la porta USB, è stata fatto uno studio di fattibilità al fine di inserire un servizio di videochiamate all'interno dell'applicazione.
-Questo plug-in è già presente sulla versione di Livesignage per dispositivi Raspberry e si basa su Jitsi: un progetto Open Source che implementa i protocolli e le interfacce necessarie.}
+Dal momento che i dispositivi LG supportano l'uso di webcam collegate tramite la porta USB, è stata fatto uno studio di fattibilità al fine di inserire un servizio di videochiamate all'interno dell'applicazione.
+Questo plug-in è già presente sulla versione di Livesignage per dispositivi Raspberry e si basa su Jitsi: un progetto Open Source che implementa i protocolli e le interfacce necessarie \cite{jitsi}.
 
-\edit{Sono stati fatti quindi alcuni test, che hanno dato esito positivo, per verificare la compatibilità delle telecamere e l'invio e la ricezione di video e audio. Tuttavia la RAM disponibile è risultata insufficiente per l'utilizzo di Jitsi Meet, l'applicazione per web call sviluppata da Jitsi, ed è stato quindi deciso di non proseguire lo studio dal momento che il tempo a disposizione non sarebbe risultato sufficiente.}
+Sono stati fatti quindi alcuni test, che hanno dato esito positivo, per verificare la compatibilità delle telecamere e l'invio e la ricezione di video e audio. Tuttavia la RAM disponibile è risultata insufficiente per l'utilizzo di Jitsi Meet, l'applicazione per web call sviluppata da Jitsi, ed è stato quindi deciso di non proseguire lo studio dal momento che il tempo a disposizione non sarebbe risultato sufficiente.
 
-\section{Possibilità per il futuro} \label{future_implementazioni}
+\section{Possibili sviluppi futuri} \label{future_implementazioni}
 
-\edit{Come detto nella presentazione delle API disponibili (capitolo \ref*{api}) la libreria \jscode{Harmony API} implementa i protocolli di comunicazione con alcuni device esterni:}
-\edit{\begin{itemize}
-    \item Sensori near-field communication (NFC) che permettono lo scambio bidirezionale di messaggi in una rete peer-to-peer che si crea automaticamente quando due apparecchi NFC vengono a contatto;
+Come detto nella presentazione delle API disponibili (capitolo \ref*{api}) la libreria \jscode{Harmony API} implementa i protocolli di comunicazione con alcuni device esterni:
+\begin{itemize}
+    \item Sensori near-field communication (NFC) che permettono lo scambio bidirezionale di messaggi in una rete peer-to-peer che si crea automaticamente quando due apparecchi NFC vengono a contatto \cite{nfc};
     \item Sensori radio-frequency identification (RFID) che, come per gli NFC, permettono lo scambio di messaggi tra sensori ed etichette tramite l'utilizzo di frequenze radio;
     \item Stampanti a calore tipicamente usata per gli scontrini. 
-\end{itemize}}
+\end{itemize}
 
-\edit{La possibilità di utilizzare queste dispositivi apre l'applicazione a diversi sviluppi futuri come pagamenti elettronici o la possibilità di mostrare contenuti diversi in base ai dati letti da uno dei sensori.}
+La possibilità di utilizzare queste dispositivi apre l'applicazione a diversi sviluppi futuri come pagamenti elettronici o la possibilità di mostrare contenuti diversi in base ai dati letti da uno dei sensori.
 
-\edit{Il tempo a disposizione non ha permesso di andare oltre la fase di analisi di queste funzionalità ma sono stati comunque definiti i possibili protocolli per lo sviluppo.}
+Il tempo a disposizione non ha permesso di andare oltre la fase di analisi di queste funzionalità ma sono stati comunque definiti i possibili protocolli per lo sviluppo.
