@@ -97,9 +97,9 @@ In risposta viene passato un oggetto alle funzioni di callback, in listing \ref*
 Poichè queste funzioni sono asincrone e quindi indipendenti dalla normale esecuzione del codice, è stato necessario gestire l'attesa delle risposte e la sincronizzazione con il resto del codice.
 
 JavaScript non è un linguaggio multi-trhead ma può gestire delle funzioni asincrone tramite un call stack e un event loop che sono parte del ambiente di esecuizione JavaScript del browser: il call stack mantiene una coda di tutte le chiamate effettuate dal thread principale, l'event loop si occupa di prendere dalla coda ed eseguire le chiamate asincrone in un ambiente separato dal thread principale, spesso queste funzioni sono interfacce a metodi di basso livello implementati dal web engine in C o C++. In questo modo la funzione successiva nella coda può essere eseguita mentre quella bloccante è eseguita in background. 
-\edit{Alle funzioni asincrone possono essere passate come parametri una o più funzioni, dette callback, da invocare alla fine dell'esecuzione dell'operazione asincrona; queste saranno inserite nell call stack dall'event loop.  \cite{MdN}.}
+Alle funzioni asincrone possono essere passate come parametri una o più funzioni, dette callback, da invocare alla fine dell'esecuzione dell'operazione asincrona; queste saranno inserite nell call stack dall'event loop.  \cite{MdN}.
 
-\edit{In Listing \ref*{lst:callbacksample} si può vedere un esempio di queste funzioni: in questo caso la funzione asincrona è getNetworkInterface che si occupa di richiedere al sistema operativo le informazioni riguardanti la connessione, a questa vengono passate \jscode{successCb} e \jscode{failureCb}; alla fine dell'esecuzione dell'operazione asincrona,in caso di successo, verrà inserita nel call stack la funzione \jscode{successCb} e il parametro \jscode{cbObject} sarà l'oggetto contenente i dati ricevuti dal sistema.}
+In Listing \ref*{lst:callbacksample} si può vedere un esempio di queste funzioni: in questo caso la funzione asincrona è getNetworkInterface che si occupa di richiedere al sistema operativo le informazioni riguardanti la connessione, a questa vengono passate \jscode{successCb} e \jscode{failureCb}; alla fine dell'esecuzione dell'operazione asincrona,in caso di successo, verrà inserita nel call stack la funzione \jscode{successCb} e il parametro \jscode{cbObject} sarà l'oggetto contenente i dati ricevuti dal sistema.
 
 \lstinputlisting[caption={Funzioni di callback.}, label={lst:callbacksample}, language=JavaScript]{listings/svolgimento/callback_sample.js}
 
@@ -172,7 +172,7 @@ Come mostrato in Listing \ref*{lst:updls} per prima cosa si imposta un time-out 
 
 Anche in questo caso una copia del file dell'applicazione attuale viene mantenuta in memoria fino al momento dell'aggiornamento, in modo che il client possa funzionare in caso di errore.
 
-\subsection{Gestione input del telecomando}
+\subsection{Gestione degli input del telecomando}
 
 Un'altra importante funzionalità aggiunta è stata quella di poter cambiare la gestione dei segnali ricevuti dal telecomando  all'interno dell'applicazione.
 Questo, oltre a evitare che persone non autorizzate possano interagire con il display, permette di personalizzare l'esperienza utente e le funzionalità dell'applicazione senza la necessità di passare dal back office.
