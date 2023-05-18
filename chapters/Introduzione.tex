@@ -3,7 +3,7 @@
 \linespread{1.5}
 
 \section{In Breve}
-In questa sezione vengono introdotti: lo scopo e lo svolgimento del tirocinio compreso il contesto in cui è stato svolto il lavoro, l'applicazione Livesignage e la sua architettura, lo stato dell'arte e gli obiettivi raggiunti. Infine è presentata una descrizione della struttura di questa relazione.
+In questa sezione vengono introdotti: lo scopo e lo svolgimento del tirocinio, compreso il contesto in cui è stato svolto il lavoro, l'applicazione Livesignage e la sua architettura, lo stato dell'arte e gli obiettivi raggiunti. Infine è presentata una descrizione della struttura di questa relazione.
 
 \section{Scopo del tirocinio}
 
@@ -19,7 +19,7 @@ Il digital signage è una forma di comunicazione direttamente nel punto vendita,
 
 Livesignage è un’applicazione per il digital signage sviluppata per vari dispositivi specializzati tra i quali quelli di Samsung. L’idea è quella di fornire all'utente un modo semplice e flessibile per creare i propri contenuti cercando, quando possibile, di automatizzare il processo usando tutte le informazioni contenute sul suo sito web o sul proprio database. Tramite l'utilizzo di alcuni plug-in, è possibile ampliare ancora le feature disponibili: come la possibilità di fare webcall e l'integrazione delle informazioni reperibili dai propri social network.
 
-Inoltre, alla creazione di una playlist (vedi sezione \ref*{statoarte}), viene automaticamente creata una progressive Web App: un'applicazione navigabile direttamente dal browser e completamente impostabile dal creatore dei contenuti permettendo un'interazione maggiore dell'utente finale.
+Inoltre, alla creazione di una playlist (vedi sezione \ref*{statoarte}), viene automaticamente creata una progressive Web App: un'applicazione navigabile direttamente dal browser e completamente impostabile dal creatore dei contenuti permettendo un'interazione maggiore da parte dell'utente finale.
 
 La Figura \ref{fig:liveToursitSample} illustra un esempio di quello che potrebbe essere mostrato su un totem installato in una città; tramite il codice QR creato automaticamente insieme ai contenuti mostrati, il consumatore può quindi ricevere le informazioni in modo più dettagliato sul proprio dispositivo mobile senza bisogno di scaricare applicazioni o fare ricerche online.
 
@@ -51,7 +51,7 @@ L'idea alla base dell'applicazione è quella di mostrare una serie di slide orga
 \end{itemize}
 
 
-Oltre alle playlist è possibile utilizzare dei plug-in per poter dare al cliente più possibilità di personalizzazione. Ad esempio permettendo di  mostrare contenuti interattivi utilizzando l'input dell'utente tramite il touchscreen o di inserire il proprio e-commerce.
+Oltre alle playlist è possibile utilizzare dei plug-in per poter dare al creatore di contenuti più possibilità di personalizzazione, ad esempio permettendo di  mostrare contenuti interattivi utilizzando l'input dell'utente tramite il touchscreen o di inserire il proprio e-commerce.
 
 \subsection{Architettura}
 \begin{figure}[H]
@@ -61,7 +61,7 @@ Oltre alle playlist è possibile utilizzare dei plug-in per poter dare al client
     \label{fig:architettura}
 \end{figure}
 
-L'applicazione è suddivisa in due parti: una parte è installata sul dispositivo per il digital signage, questa si occupa di riceve dal back office le playlist da mostrare e le impostazioni che il creatore di contenuti ha impostato (timer di accensione, volume, luminosità), la seconda parte, il back office, è online ed è accessibile tramite una web page (Fig: \ref*{fig:schermata-web}): qui è possibile controllare alcune funzioni del device client, creare e impostare le proprie playlist e i plug-in. 
+L'applicazione è suddivisa in due parti: una parte è installata sul dispositivo per il digital signage e si occupa di ricevere dal back office le playlist da mostrare e le impostazioni che il creatore di contenuti ha impostato (timer di accensione, volume, luminosità); l'altra parte, il back office, è online ed è accessibile tramite una web page (Fig: \ref*{fig:schermata-web}): qui è possibile controllare alcune funzioni del device client, creare e impostare le proprie playlist e i plug-in. 
 
 \begin{figure}[H]
     \centering
@@ -87,7 +87,7 @@ Nella figura \ref*{fig:use_case} sono rappresentati i passaggi necessari alla cr
 % \note{figura web page piú grande}
 
 \section{Requisiti}
-Lo svolgimento del lavoro è incentrato sullo sviluppo di un'applicazione client per dispositvi di digital signage, sviluppata su sistema operativo WebOS Signage di LG; questa deve essere in grado di mostrare contenuti multimediali tramite l'uso di HTML e CSS su un web engine, installato sul device, basato su Chromium, deve poter eseguire degli script JavaScript, aprire una socket di comunicazione verso il web server, scaricare le immagini e i video necessari alla corretta visualizzazione dei contenuti programmati e comunicare con il sistema operativo del device tramite l'uso delle interfacce messe a disposizione dal sistema operativo.
+Lo svolgimento del lavoro è incentrato sullo sviluppo di un'applicazione client per dispositvi di digital signage, sviluppata su sistema operativo WebOS Signage di LG. L'applicazione deve essere in grado di mostrare contenuti multimediali tramite l'uso di HTML e CSS su un web engine, installato sul device, basato su Chromium, deve poter eseguire degli script JavaScript, aprire una socket di comunicazione verso il web server, scaricare le immagini e i video necessari alla corretta visualizzazione dei contenuti programmati, comunicare con il sistema operativo del device tramite l'uso delle interfacce esposte dal sistema.
 L'applicazione deve inoltre poter salvare in memoria i contenuti e le informazioni necessarie affinchè possa funzionare anche in assenza di connessione. Deve infine poter modificare il comportamento di alcuni tasti del telecomando durante l'esecuzione.
 
 

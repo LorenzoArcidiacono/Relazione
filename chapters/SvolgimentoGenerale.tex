@@ -16,12 +16,12 @@ Nella Fig.\ref*{fig:architettura_2} è presentato uno schema dell'architettura d
 \end{figure}
 
 \begin{itemize}
-    \item Web server: qui vengono salvati in un database MySQL tutte le informazioni degli utenti, dei dispositivi e le playlist create, tutte queste informazioni vengono elaborate e inviate ai client attraverso una socket. Questo si occupa inoltre di caricare su AWS le immagini e i video caricati dal creatore di contenuti in modo da essere scaricabili tramite link dai device client;
-    \item Livesignage: dopo aver stabilito il canale di comunicazione con il web server, resta in attesa dei messaggi da questo inviati e si occupa di svolgere le operazioni richieste tramite back office, dal creatore di contenuti, comunicando tramite le API a disposizione, con il sistema operativo sottostante.
-    \item Sistema operativo: gestisce le richieste fatte da Livesignage tramite API, una volta che queste sono portate a termine chiama le funzioni di callback passate come parametri dell'API (vedi \ref*{apicode}).
+    \item Web server: qui vengono salvati in un database MySQL tutte le informazioni degli utenti, dei dispositivi e le playlist create: tutte queste informazioni vengono elaborate e inviate ai client attraverso una socket. Questo si occupa inoltre di salvare su AWS le immagini e i video caricati dal creatore di contenuti in modo da essere scaricabili tramite link dai device client;
+    \item Livesignage: dopo aver stabilito il canale di comunicazione con il web server, resta in attesa dei messaggi da questo inviati e si occupa di svolgere le operazioni richieste tramite back office dal creatore di contenuti, comunicando, tramite le API a disposizione, con il sistema operativo sottostante.
+    \item Sistema operativo: gestisce le richieste fatte da Livesignage tramite API, una volta che queste sono portate a termine chiama le funzioni di callback passate come parametri delle interfacce (vedi \ref*{apicode}).
 \end{itemize}
 
-Gli altri componenti del sistema sono: il database principale su cui viene salvato il codice HTML delle playlist, il database dei log in cui sono scritti i messaggi di errore in modo che siano successivamente scaricabili dal creatore di contenuti e la cartella degli assets nella quale vengono salvate le immagini e i video delle playlist create in modo che queste possano essere visualizzate anche offline.
+Gli altri componenti del sistema sono: il database principale su cui viene salvato il codice HTML delle playlist, il database dei log in cui sono scritti i messaggi di errore, in modo che siano successivamente scaricabili dal creatore di contenuti e la cartella degli assets nella quale vengono salvate le immagini e i video delle playlist create, in modo che queste possano essere visualizzate anche offline.
 
 \subsection{Codice Livesignage}
 
@@ -45,8 +45,8 @@ Il resto dei file fondamentali si trova nella cartella \jscode{js/}, qui sono ra
     \item filemanager.js: si occupa della gestione del file system del sistema e del download e della cancellazione degli assets;
     \item livesignage.js: in questa classe sono contenuti i metodi per la visualizzazione delle playlist, la gestione di alcuni comandi ricevuti dal server come: il cambio di slide, il passaggio alla visualizzazione dell'ingresso HDMI e le richieste di salvataggio e cancellazione delle playlist dal database;
     \item log.js: qui sono presenti i metodi per la creazione dei messaggi di errore e l'invio di questi al back office in modo che possano essere visualizzati dal cliente;
-    \item main.js: questo è lo script principale che si occupa di chiamare le altre classi, in particolare controlla se sia necessario scaricare un aggiornamento dell'applicazione o del firmware del sistema operativo (vedi \ref*{update}), chiama a intervalli di tempo i metodi per il controllo della connessione, invoca i metodi che si occupano della comunicazione con il back office e, se il display risulta offline, avvia la visualizzazione dell'ultima playlist salvata.
-    \item monitor.js: questa classe si occupa di aprire la socket verso il back office e di restare in ascolto su questa, alla ricezione dei messaggi chiama i metodi necessari.
+    \item main.js: questo è lo script principale che si occupa di chiamare le altre classi, in particolare controlla se sia necessario scaricare un aggiornamento dell'applicazione o del firmware del sistema operativo (vedi \ref*{update}), chiama a intervalli di tempo prestabililti i metodi per il controllo della connessione, invoca i metodi che si occupano della comunicazione con il back office e, se il display risulta offline, avvia la visualizzazione dell'ultima playlist salvata;
+    \item monitor.js: questa classe si occupa di aprire la socket verso il back office e di restare in ascolto su questa, alla ricezione dei messaggi chiama i metodi necessari;
     \item speedtest.js: questa classe viene invocata quando si riceve una richiesta per valutare lo stato della rete dal back office.
 \end{itemize}
 
@@ -57,12 +57,12 @@ Dopo l'analisi dell'applicazione preesistente è stata studiata la documentazion
 Come detto in \ref*{api} sono state analizzate le diverse interfacce messe a disposizone dal sistema per la comunicazione tra il browser e il sistema operativo; le librerie disponibili sono: 
 \begin{itemize}
     \item SCAP API: un set di interfacce specifiche per WebOS Signage, la versione di WebOS dedicata ai sistemi di digital signage,suddivise in diverse classi a seconda delle funzionalità. Questo è il set scelto per lo sviluppo poiché, sebbene non sia il più recente, è l'unico compatibile con tutti i device di digital signage di LG e che abbia un set ampio di interfacce tale da coprire i requisiti dell'applicazione;
-    \item IDCAP API: è il nuovo standard di API di LG che ha come obiettivo quello di rendere univoche le interfacce per le diverse versioni di WebOS sia quella per il digital signage che quella per le TV commerciali. Nonostante questo set sia quello raccomandato da LG è supportato solamente da WebOS Signage 6.0 e successivi;
+    \item IDCAP API: è il nuovo standard di API di LG che ha come obiettivo quello di rendere univoche le interfacce per le diverse versioni di WebOS, sia quella per il digital signage che quella per le TV commerciali. Nonostante questo set sia quello raccomandato da LG è supportato solamente da WebOS Signage 6.0 e successivi;
     \item Harmony API: una libreria, specifica per WebOS Signage, contenente le interfacce per la comunicazione con alcuni dispositivi esterni come ad esempio stampanti, sensori NFC e infrarossi;
     \item CustomJS API: questo set aggiunge alcune interfacce mancanti alla libreria SCAP. Questa libreria è aggiunta all'applicazione sviluppata al fine di espanderne le funzionalità (si veda \ref*{aggiunte}).
 \end{itemize}
 
-Sono state anche studiate le caratteristiche hardware e software dei dispositivi cercando di capire quali fossero quelle minime comuni a tutti. Dal momento che le componenti software e hardware sono molto diverse tra loro a seconda della versione del sistema operativo, sono stati presi in considerazione solo i dispositivi che supportano almeno WebOS signage 4.0. Di seguito sono riportate le specifiche e le versioni dei linguaggi di programmazione supportate che sono state identificate dopo l'analisi.
+Sono state anche studiate le caratteristiche hardware e software dei dispositivi, cercando di capire quali fossero quelle minime comuni a tutti. Dal momento che le componenti software e hardware sono molto diverse tra loro a seconda della versione del sistema operativo, sono stati presi in considerazione solo i dispositivi che supportano almeno WebOS Signage 4.0. Di seguito sono riportate le specifiche e le versioni dei linguaggi di programmazione supportate che sono state identificate dopo l'analisi.
 
 \begin{center}
 \begin{tabular}{ |l|r| } 
@@ -86,9 +86,9 @@ Sono state anche studiate le caratteristiche hardware e software dei dispositivi
 \section{Scrittura delle classi JavaScript}\label{js_code}
 
 \subsection{Codice delle chiamate alle API} \label{apicode}
-Le chiamate API per i dispositivi LG sono di due tipi, le prime ( Listing \ref*{lst:apiget} ) servono per chiedere delle informazioni al sistema operativo come ad esempio il numero seriale, il MAC address o il livello del volume, le seconde (Listing \ref*{lst:apipost}) servono per modificare delle impostazioni di sistema come il volume, lo stato del dispositivo (accensione e spegnimento) o la rotazione dello schermo. In entrambi i casi vengono passate due funzioni dette di callback che saranno eseguite in caso di successo o fallimento della chiamata, le chiamate di modifica del device necessitano inoltre di una struttura contenente i nuovi valori da impostare.
+Le chiamate API per i dispositivi LG sono di due tipi: le prime ( Listing \ref*{lst:apiget} ) servono per chiedere delle informazioni al sistema operativo come ad esempio il numero seriale, il MAC address o il livello del volume, le seconde (Listing \ref*{lst:apipost}) servono per modificare delle impostazioni di sistema come il volume, lo stato del dispositivo (accensione e spegnimento) o la rotazione dello schermo. In entrambi i casi vengono passate due funzioni dette di callback che saranno eseguite in caso di successo o fallimento della chiamata; le chiamate di modifica del device necessitano inoltre di una struttura contenente i nuovi valori da impostare.
 
-In risposta viene passato un oggetto alle funzioni di callback, in listing \ref*{lst:returnsample} vengono mostrati due esempi: uno in caso di successo, uno di fallimento.
+In risposta viene passato un oggetto alle funzioni di callback, in Listing \ref*{lst:returnsample} vengono mostrati due esempi: uno in caso di successo, uno di fallimento.
 
 \lstinputlisting[caption={Esempio chiamata API WebOS.}, label={lst:apiget}, language=JavaScript, firstline=0, lastline=18]{listings/svolgimento/api_sample.js}
 \lstinputlisting[caption={Esempio chiamata API WebOS.}, label={lst:apipost}, language=JavaScript, firstline=37, lastline=54]{listings/svolgimento/api_sample.js}
@@ -96,14 +96,14 @@ In risposta viene passato un oggetto alle funzioni di callback, in listing \ref*
 
 Poichè queste funzioni sono asincrone e quindi indipendenti dalla normale esecuzione del codice, è stato necessario gestire l'attesa delle risposte e la sincronizzazione con il resto del codice.
 
-JavaScript non è un linguaggio multi-trhead ma può gestire delle funzioni asincrone tramite un call stack e un event loop che sono parte del ambiente di esecuizione JavaScript del browser: il call stack mantiene una coda di tutte le chiamate effettuate dal thread principale, l'event loop si occupa di prendere dalla coda ed eseguire le chiamate asincrone in un ambiente separato dal thread principale, spesso queste funzioni sono interfacce a metodi di basso livello implementati dal web engine in C o C++. In questo modo la funzione successiva nella coda può essere eseguita mentre quella bloccante è eseguita in background. 
-Alle funzioni asincrone possono essere passate come parametri una o più funzioni, dette callback, da invocare alla fine dell'esecuzione dell'operazione asincrona; queste saranno inserite nell call stack dall'event loop.  \cite{MdN}.
+JavaScript non è un linguaggio multi-trhead ma può gestire delle funzioni asincrone tramite un call stack e un event loop che sono parte dell' ambiente di esecuzione JavaScript del browser: il call stack mantiene una coda di tutte le chiamate effettuate dal thread principale, l'event loop si occupa di prendere dalla coda ed eseguire le chiamate asincrone in un ambiente separato dal thread principale; spesso queste funzioni sono interfacce a metodi di basso livello implementati dal web engine in C o C++. In questo modo la funzione successiva nella coda può essere eseguita mentre quella bloccante è eseguita in background. 
+Alle funzioni asincrone possono essere passate come parametri una o più funzioni, dette callback, da invocare alla fine dell'esecuzione dell'operazione asincrona; queste saranno inserite nel call stack dall'event loop.  \cite{MdN}.
 
-In Listing \ref*{lst:callbacksample} si può vedere un esempio di queste funzioni: in questo caso la funzione asincrona è getNetworkInterface che si occupa di richiedere al sistema operativo le informazioni riguardanti la connessione, a questa vengono passate \jscode{successCb} e \jscode{failureCb}; alla fine dell'esecuzione dell'operazione asincrona,in caso di successo, verrà inserita nel call stack la funzione \jscode{successCb} e il parametro \jscode{cbObject} sarà l'oggetto contenente i dati ricevuti dal sistema.
+In Listing \ref*{lst:callbacksample} si può vedere un esempio di queste funzioni: in questo caso la funzione asincrona è \jscode{getNetworkInterface} che si occupa di richiedere al sistema operativo le informazioni riguardanti la connessione, a cui vengono passate \jscode{successCb} e \jscode{failureCb}; alla fine dell'esecuzione dell'operazione asincrona,in caso di successo, verrà inserita nel call stack la funzione \jscode{successCb} e il parametro \jscode{cbObject} sarà l'oggetto contenente i dati ricevuti dal sistema.
 
 \lstinputlisting[caption={Funzioni di callback.}, label={lst:callbacksample}, language=JavaScript]{listings/svolgimento/callback_sample.js}
 
-Si è cercato di ridurre il numero di chiamate alle API, per diminuire in maniera sostanziale i ritardi causati da queste, salvando i dati destinati a perdurare nel tempo nel \jscode{localStorage}: un oggetto definito dal browser che permette di salvare in maniera temporanea delle coppie di oggetti chiave-valore. Tuttavia, non essendo assicurata dal browser la persistenza di questo oggetto sono stati implementati tutti i controlli necessari. In \ref*{freestorage} saranno evidenziati i problemi relativi alla capacità del localStorage e alle soluzioni trovate al fine di bilanciare la velocità di esecuzione e la disponibilità dello spazio di memoria.
+Si è cercato di ridurre il numero di chiamate alle API, per diminuire in maniera sostanziale i ritardi causati da queste, salvando i dati destinati a perdurare nel tempo nel \jscode{localStorage}, un oggetto definito dal browser che permette di salvare in maniera temporanea delle coppie di oggetti chiave-valore. Tuttavia, non essendo assicurata dal browser la persistenza di questo oggetto, sono stati implementati tutti i controlli necessari. In \ref*{freestorage} saranno evidenziati i problemi relativi alla capacità del localStorage e alle soluzioni trovate al fine di bilanciare la velocità di esecuzione e la disponibilità dello spazio di memoria.
 
 \subsection{Flusso principale}\label{flusso_principale}
 
@@ -124,7 +124,8 @@ La classe \jscode{Monitor} si occupa della gestione della socket e all'arrivo di
 
 \lstinputlisting[caption={parseMessage().}, label={lst:monitor}, language=JavaScript]{listings/svolgimento/monitor.js}
 
-Nel caso in cui la socket venga chiusa o a causa di errori o per mancanza di connessione il device viene ritenuto offline: si provvede quindi a eliminare momentaneamente i contenuti che necessitano di una connessione attiva ( meteo, notizie, video online) e viene avviato un meccanismo che prova a riaprire la socket ad intervalli di tempo prestabiliti.
+Nel caso in cui la socket venga chiusa, a causa di errori o per mancanza di connessione, il device viene ritenuto offline: si provvede quindi a eliminare momentaneamente i contenuti che necessitano di una connessione attiva ( meteo, notizie, video online) e viene avviato un meccanismo che prova a riaprire la socket ad intervalli di tempo prestabiliti.
+
 A seguito dei test è stato notato che questo protocollo non assicura di accorgersi in maniera tempestiva dell'assenza di rete ed è stato quindi necessario implementare un secondo protocollo, mostrato in \ref*{flusso_principale}, in cui periodicamente viene fatta una chiamata HTTP per controllare che sia presente la connessione.
 
 La necessità di accorgersi velocemente della mancanza di connessione è dovuta alla presenza delle fonti esterne citate sopra che, qualora non abbiano accesso alla rete, possono mostrare errori, dati non aggiornati o addirittura bloccare l'esecuzione dell'applicazione.
