@@ -1,13 +1,13 @@
 \chapter{Studio di Funzionalità Aggiuntive}\label{aggiunte}
 
 \section{In breve}
-Una volta che l'applicazione è stata completata nella sua versione base ho avuto modo di aggiungere, o almeno studiare la possibilità di farlo, alcune funzionalità non presenti nella versione per dispositivi Samsung che non erano previste a inizio tirocinio, ma lo studio della documentazione ci ha portato a considerare.
+Una volta che l'applicazione è stata completata nella sua versione base ho avuto modo di aggiungere, o almeno studiare la possibilità di farlo, alcune funzionalità non presenti nella versione per dispositivi Samsung e che non erano previste a inizio tirocinio, ma che lo studio della documentazione ci ha portato a considerare.
 In questo capitolo si presenta una descrizione della fase di analisi e, quando possibile, aggiunta delle nuove funzionalità e alcune idee per possibili miglioramenti futuri.
 
 \section{Wake On Lan}
 
 Nei dispositivi LG è implementato il protocollo Wake on LAN cioè la possibilità di accendere il dispositivo da remoto tramite l'invio di un messaggio, da parte di un device sulla stessa LAN, con protocollo UDP.
-Il messaggio da inviare, chiamato magic packet, è formato da 102 bytes: i primi 6 rappresentano il numero 255 i successivi rappresentano l'indirizzo MAC del dispositivo ricevente \cite{wol}.
+Il messaggio da inviare, chiamato magic packet, è formato da 102 bytes: i primi 6 rappresentano il numero 255, i successivi rappresentano l'indirizzo MAC del dispositivo ricevente \cite{wol}.
 
 I device LG danno la possibilità di attivare questo protocollo sia in caso di connessione cablata che wireless, sono state implementate quindi le chiamate per verificare lo stato e attivare il protocollo dal back office.
 
@@ -19,8 +19,8 @@ Tuttavia, dal momento che il dispositivo ricevente il messaggio deve trovarsi ne
 
 \section{Videochiamate}
 
-Dal momento che i dispositivi LG supportano l'uso di webcam collegate tramite la porta USB, è stata fatto uno studio di fattibilità al fine di inserire un servizio di videochiamate all'interno dell'applicazione.
-Questo plug-in è già presente sulla versione di Livesignage per dispositivi Raspberry e si basa su Jitsi: un progetto Open Source che implementa i protocolli e le interfacce necessarie \cite{jitsi}.
+Dal momento che i dispositivi LG supportano l'uso di webcam collegate tramite la porta USB, è stato fatto uno studio di fattibilità al fine di inserire un servizio di videochiamate all'interno dell'applicazione.
+Questo plug-in è già presente sulla versione di Livesignage per dispositivi Raspberry e si basa su Jitsi, un progetto Open Source che implementa i protocolli e le interfacce necessarie \cite{jitsi}.
 
 Sono stati fatti quindi alcuni test, che hanno dato esito positivo, per verificare la compatibilità delle telecamere e l'invio e la ricezione di video e audio. Tuttavia la RAM disponibile è risultata insufficiente per l'utilizzo di Jitsi Meet, l'applicazione per web call sviluppata da Jitsi, ed è stato quindi deciso di non proseguire lo studio dal momento che il tempo a disposizione non sarebbe risultato sufficiente.
 
@@ -30,9 +30,9 @@ Come detto nella presentazione delle API disponibili (capitolo \ref*{api}) la li
 \begin{itemize}
     \item Sensori near-field communication (NFC) che permettono lo scambio bidirezionale di messaggi in una rete peer-to-peer che si crea automaticamente quando due apparecchi NFC vengono a contatto \cite{nfc};
     \item Sensori radio-frequency identification (RFID) che, come per gli NFC, permettono lo scambio di messaggi tra sensori ed etichette tramite l'utilizzo di frequenze radio;
-    \item Stampanti a calore tipicamente usata per gli scontrini. 
+    \item Stampanti a calore tipicamente usate per gli scontrini. 
 \end{itemize}
 
-La possibilità di utilizzare queste dispositivi apre l'applicazione a diversi sviluppi futuri come pagamenti elettronici o la possibilità di mostrare contenuti diversi in base ai dati letti da uno dei sensori.
+La possibilità di utilizzare questi dispositivi apre l'applicazione a diversi sviluppi futuri come pagamenti elettronici o la possibilità di mostrare contenuti diversi in base ai dati letti da uno dei sensori.
 
 Il tempo a disposizione non ha permesso di andare oltre la fase di analisi di queste funzionalità ma sono stati comunque definiti i possibili protocolli per lo sviluppo.

@@ -132,11 +132,11 @@ La necessità di accorgersi velocemente della mancanza di connessione è dovuta 
 
 \subsection{Lettura e scrittura dei database} \label{database}
 
-Al fine di garantire che anche in caso di assenza di connessione e ridurre il numero di chiamate HTTP e conseguenti download degli assets necessari, all'arrivo dei dati dal back office: al momento del cambio di una playlist o dell'inserimento di un plug-in, tutti i dati sono salvati in locale su un database non relazionale.
+Al fine di garantire la corretta visualizzazione dei contenuti in caso di assenza di connessione e per ridurre il numero di chiamate HTTP e conseguenti download degli assets necessari all'arrivo dei dati dal back office: al momento del cambio di una playlist o dell'inserimento di un plug-in, tutti i dati sono salvati in locale su un database non relazionale.
 
 Dal momento che JavaScript non prevede i metodi per la comunicazione con un database SQL, è stata usata la libreria Dixie.js \cite{dixie} che permette di salvare i dati necessari in un file di testo, appositamente formattato, e accederli tramite indicizzazione chiave - valore. Il file viene letto all'avvio dell'applicazione e viene creato il database che sarà quindi accessibile tramite le funzioni della libreria. Il salvataggio del database avviene sovrascrivendo il vecchio file nel file system.
 
-Dixie.js si occupa di creare e leggere le entry nell'\jscode{IndexedDB}: un database NoSQL presente nel web browser. Come il \jscode{localStorage} (vedi \ref*{freestorage}) questo database non assicura la persistenza dei dati ma è pensato, a differenza del primo, per ospitare una grande quantità di dati. La libreria, oltre a facilitare le operazioni di lettura e scrittura, permette di ricreare velocemente la struttura e i dati contenuti nel database al momento dell'ultimo salvataggio.
+Dixie.js si occupa di creare e leggere le entry nell'\jscode{IndexedDB}, un database NoSQL presente nel web browser. Come il \jscode{localStorage} (vedi \ref*{freestorage}) questo database non assicura la persistenza dei dati ma è pensato, a differenza del primo, per ospitare una grande quantità di dati. La libreria, oltre a facilitare le operazioni di lettura e scrittura, permette di ricreare velocemente la struttura e i dati contenuti nel database al momento dell'ultimo salvataggio.
 
 Durante lo studio della documentazione LG è stato osservato che il buffer di memoria per la lettura e scrittura di un file è solo di 10 KB; è stato quindi necessario implementare le funzioni di scrittura e lettura di un file in maniera ricorsiva in modo che fosse possibile usarla come funzione di callback.
 Dal momento che il numero di chiamate necessarie a portare a termine le operazioni è elevato ed i tempi di esecuzione intorno ai 30s, è stato quindi deciso di implementare le due funzioni in modo completamente asincrono rispetto al resto del flusso di esecuzione. 
@@ -145,7 +145,7 @@ Nonostante questo, il carico di lavoro risulta piuttosto elevato e di conseguenz
 
 \lstinputlisting[caption={Scrittura ricorsiva del database.}, label={lst:dbwrite}, language=JavaScript]{listings/svolgimento/databasewrite.js}
 
-Nel Listing \ref*{lst:dbwrite} sono mostrate le due funzioni usate per la scrittura del database; inizialmente viene eliminato il file precedentemente salvato e, in caso di successo, prima viene fatto un encoding in bytes della stringa rappresentante il contenuto del file e successivamente la funzione di \jscode{doStoreFile()} scrive 10KB alla volta sul file.
+Nel Listing \ref*{lst:dbwrite} sono mostrate le due funzioni usate per la scrittura del database; inizialmente viene eliminato il file precedentemente salvato e, in caso di successo, prima viene fatto un encoding in bytes della stringa rappresentante il contenuto del file e, successivamente, la funzione di \jscode{doStoreFile()} scrive 10KB alla volta sul file.
 
 Sono state pensate diverse soluzioni possibili, tra le quali: il salvataggio di un minor numero di dati, la suddivisione in database distinti per gli assets e il codice delle playlist o la cancellazione periodica dei dati più vecchi. Al momento nessuna di queste opzioni è risultata applicabile o per motivi legati alla struttura del database o per mantenibilità rispetto agli altri client.
 
@@ -213,13 +213,13 @@ I comandi che rientrano in questo caso sono stati ridotti al minimo e si è cerc
 La fase di test è stata suddivisa in due momenti: inizialmente sono state testate le singole funzionalità durante la scrittura dell'applicazione e successivamente sono stati svolti una serie di test, in maniera più approfondita, di tutto il sistema.
 
 La prima fase ha evidenziato molti dei problemi descritti precedentemente, dando quindi la possibilità di analizzarli e trovare soluzioni alternative.
-Nella seconda fase ci si è cercato di capire quali fossero i limiti, dovuti all'hardware e al software a disposizione:
+Nella seconda fase si è cercato di capire quali fossero i limiti dovuti all'hardware e al software a disposizione:
 \begin{itemize}
-    \item Stress test: sono state inserite una serie di playlist contenenti un alto numero di slides di diverso tipo in modo da capire i tempi necessari al download, di scrittura del database e la reattività nel cambio tra le slide;
+    \item Stress test: sono state inserite una serie di playlist contenenti un alto numero di slide di diverso tipo in modo da capire i tempi necessari al download, di scrittura del database e la reattività nel cambio tra le slide;
     \item Test sulla rete: sono state testati i tempi entro cui il device si accorge dell'assenza di rete e delle tempistiche necessarie ad eliminare i contenuti non disponibili offline;
     \item Test del web engine: sono state inserite diverse slide il cui contenuto potesse risultare difficile da gestire per il browser e playlist composte da 4 playlist mostrate contemporaneamente.
 \end{itemize}
 
-Tutti i test sono stati svolti su entrambi i dispositivi a disposizione: è stato notato che il media player si è dimostrato migliore per quanto riguarda la velocità di scrittura del file del database nel file system mentre il display riesce a gestire i maniera più fluida i contenuti da mostrare in particolare quando questi presentano molte animazioni o un alto numero di componenti.
+Tutti i test sono stati svolti su entrambi i dispositivi a disposizione: è stato notato che il media player si è dimostrato migliore per quanto riguarda la velocità di scrittura del file del database nel file system, mentre il display riesce a gestire in maniera più fluida i contenuti da mostrare, in particolare quando questi presentano molte animazioni o un alto numero di componenti.
 
 In generale i dispositivi LG si sono dimostrati meno performanti rispetto a quelli Samsung (su cui era già disponibile Livesignage) ma hanno alcune caratteristiche uniche come la possibilità di mostrare fino a 4 video contemporaneamente e la maggiore compatibilità con le periferiche esterne (si veda \ref*{aggiunte}).
